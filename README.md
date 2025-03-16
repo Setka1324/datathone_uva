@@ -44,10 +44,29 @@ This repository contains the source code for a datathon website built with React
 
 ## Project Structure
 
-repository-root/ ├── backend/ # Flask backend source code │ ├── app.py # Application entry point │ ├── models.py # Database models │ ├── routes/ # API route definitions │ ├── config.py # Configuration and environment variables │ └── requirements.txt ├── frontend/ # React frontend source code │ ├── public/ │ ├── src/ │ │ ├── components/ # Reusable React components │ │ ├── pages/ # Page-level components (Home, Login, Dashboard, etc.) │ │ └── App.js # Main React application │ ├── package.json │ └── tailwind.config.js ├── docker-compose.yml # Docker Compose configuration for multi-container setup └── README.md # This file
+Updated the backend section to include the seed script and .env example:
 
-markdown
-Copy
+├── backend/           
+│   ├── app.py                 # Application entry point
+│   ├── models.py              # Database models
+│   ├── routes/                # API route definitions
+│   │   ├── auth.py
+│   │   ├── tracks.py
+│   │   └── submissions.py
+│   ├── config.py              # Configuration and environment variables
+│   ├── requirements.txt
+│   ├── seed.py                # Script for seeding the database
+│   ├── .env.example           # Environment variable template
+│   └── uploads/               # Folder for uploaded files (not tracked by git)
+
+## Environment Configuration
+
+- **.env File:**  
+  The repository includes a `.env.example` file as a template. Copy it to create a local `.env` file in the `backend` directory:
+
+  ```bash
+  cp backend/.env.example backend/.env
+
 
 ## Installation
 
@@ -132,9 +151,4 @@ License
 This project is licensed under the MIT License.
 
 Contact
-For questions or further information, please open an issue or contact your-email@example.com.
-
-arduino
-Copy
-
-This README provides a clear overview of the project, instructions for setting up the development environm
+For questions or further information, please open an issue or contact mstemchenko@yandex.ru.
