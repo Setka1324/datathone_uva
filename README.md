@@ -123,7 +123,7 @@ Frontend:
 Access the application at http://localhost:3000.
 
 Backend API:
-The Flask API runs on http://localhost:5000.
+The Flask API runs on http://localhost:5001.
 
 Database:
 The Postgres database is configured as specified in your environment variables or Docker setup (default port is 5432).
@@ -152,3 +152,117 @@ This project is licensed under the MIT License.
 
 Contact
 For questions or further information, please open an issue or contact mstemchenko@yandex.ru.
+
+
+
+
+
+
+
+/// AMIR ///
+
+# Datathon Platform
+
+A full-stack platform for managing datathon tracks, submissions, and user authentication.
+
+## Prerequisites
+
+- Python 3.10+
+- Node.js 16+
+- PostgreSQL 14+
+- npm 8+
+- pip 22+
+
+## Local Setup
+
+### 1. PSQL
+
+
+# Create PostgreSQL database and user
+sudo -u postgres psql -c "CREATE DATABASE datathon_db;"
+sudo -u postgres psql -c "CREATE USER datathon_user WITH PASSWORD 'datathon_password';"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE datathon_db TO datathon_user;"
+
+cd backend
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate  # Windows
+
+pip install -r requirements.txt
+
+# Set up environment variables (create .env file)
+echo "SECRET_KEY=your-secret-key-here
+DATABASE_URL=postgresql://datathon_user:datathon_password@localhost/datathon_db
+UPLOAD_FOLDER=./uploads" > .env
+
+# Create uploads directory
+mkdir uploads
+
+# Seed database
+python seed.py
+
+cd ../frontend
+npm install
+
+# Create .env file
+echo "VITE_API_BASE_URL=http://localhost:5001" > .env
+
+cd backend
+source venv/bin/activate
+python app.py
+
+cd frontend
+npm run dev
+
+Access the Application
+Frontend: http://localhost:3000
+
+Backend API: http://localhost:5001
+
+.
+├── backend
+│   ├── app.py             # Flask application entry point
+│   ├── models.py          # Database models
+│   ├── routes/            # API endpoints
+│   ├── seed.py            # Database seeding script
+│   └── requirements.txt   # Python dependencies
+├── frontend
+│   ├── src
+│   │   └── pages/         # React components
+│   └── vite.config.js     # Frontend configuration
+└── README.md
+
+Environment Variables
+Backend (.env)
+SECRET_KEY: Flask secret key
+
+DATABASE_URL: PostgreSQL connection URL
+
+UPLOAD_FOLDER: Path for file uploads
+
+Frontend (.env)
+VITE_API_BASE_URL: Base URL for API requests
+
+Troubleshooting
+Common Issues
+Database Connection Errors:
+
+Verify PostgreSQL is running
+
+Check credentials in .env match PostgreSQL setup
+
+500 Internal Server Errors:
+
+Check Flask server logs
+
+Ensure database tables exist (run python seed.py)
+
+Missing Dependencies:
+
+Reinstall requirements: pip install -r requirements.txt and npm install
+
+CORS Errors:
+
+Ensure backend and frontend are running on correct ports
+
+Verify VITE_API_BASE_URL matches Flask server port

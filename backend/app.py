@@ -1,11 +1,16 @@
 # backend/app.py
-from flask import Flask
+from flask import Flask, jsonify
+from flask_cors import CORS
 from config import Config
 from models import db
 from flask_jwt_extended import JWTManager
+from routes.auth import auth_bp
+from routes.tracks import tracks_bp
+from routes.submissions import submissions_bp
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object(Config)
 
     # Initialize extensions
@@ -13,13 +18,8 @@ def create_app():
     JWTManager(app)
 
     # Register blueprints
-    from routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
-
-    from routes.tracks import tracks_bp
     app.register_blueprint(tracks_bp, url_prefix='/api/tracks')
-    
-    from routes.submissions import submissions_bp
     app.register_blueprint(submissions_bp, url_prefix='/api/submissions')
 
     @app.route("/")
@@ -44,4 +44,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True)
+    app.run(debug=True, port=5001)

@@ -57,6 +57,20 @@ def create_submission():
 
     return jsonify({'message': 'Submission created successfully'}), 201
 
+@submissions_bp.route('/', methods=['GET'])
+def get_all_submissions():
+    try:
+        submissions = Submission.query.all()
+        return jsonify([{
+            'id': sub.id,
+            'user_id': sub.user_id,
+            'track_id': sub.track_id,
+            'status': sub.status,
+            'submission_date': sub.submission_date.isoformat()
+        } for sub in submissions]), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @submissions_bp.route('/<int:user_id>', methods=['GET'])
 @jwt_required()
 def get_user_submissions(user_id):

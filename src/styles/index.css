@@ -1,0 +1,226 @@
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+@import "tailwindcss";
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.neon-text {
+  text-shadow: 0 0 2px #00f3ff, 0 0 4px #00f3ff, 0 0 5px #00f3ff;
+}
+
+/* Cyberpunk Glitch Effect */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+.glitch-text {
+  position: relative;
+  animation: glitch 1s linear infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.8;
+}
+
+.glitch-text::before {
+  color: #ff00c1;
+  z-index: -1;
+  animation: glitch 3s infinite;
+}
+
+.glitch-text::after {
+  color: #00fff9;
+  z-index: -2;
+  animation: glitch 2s infinite;
+}
+
+@keyframes glitch-1 {
+  0% { clip-path: inset(20% 0 30% 0); }
+  100% { clip-path: inset(10% 0 40% 0); }
+}
+
+@keyframes glitch-2 {
+  0% { clip-path: inset(40% 0 10% 0); }
+  100% { clip-path: inset(30% 0 20% 0); }
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+:root {
+  --color-midnight: #181434;
+}
+
+/* Custom utilities */
+.text-midnight {
+  color: var(--color-midnight);
+}
+
+.bg-midnight {
+  background-color: var(--color-midnight);
+}
+
+/* Add to index.css */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-scanline {
+  animation: scanline 6s linear infinite;
+}
+
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+/* Add to your Dashboard component's parent container */
+.dashboard-container {
+  position: relative;
+  z-index: 1;
+}
+
+@layer utilities {
+  .bg-gradient-radial {
+    background: radial-gradient(circle at center, var(--tw-gradient-stops));
+  }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes color-pulse {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+.animate-scanline {
+  animation: scanline 6s linear infinite;
+}
+
+.animate-color-pulse {
+  animation: color-pulse 10s linear infinite;
+}
+
+body {
+    
+    font-family: Arial, Helvetica, sans-serif;
+    color: gray;
+    
+}
+
+html, body {
+    overflow: auto;
+    height: 100%;
+  }
+  
+  #root {
+    height: 100%;
+    overflow: auto;
+  }
+
+
+/* src/index.css */
+.leaflet-marker-icon {
+  z-index: -1 !important;  /* Ensure markers appear on top */
+}
+
+.leaflet-popup-content {
+  fill-opacity: 50%;
+}
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    padding: 16px 24px; /* Add padding */
+    box-shadow: 0 4px 6px -1px rgba(247, 46, 46, 0.1), 0 2px 4px -1px rgba(245, 28, 28, 0.06); /* Bottom shadow */
+    z-index: 1;
+    
+}
+
+.nav-list {
+    list-style: none; /* Remove default bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+    display: flex; /* Use Flexbox to display items horizontally */
+    justify-content: flex-start; /* Align items to the start (left) */
+    margin-right: 20px; /* Add space between items (optional) */
+    margin-top: -25px;
+    
+}
+
+
+
+.nav-list-item {
+    margin-left: 10px;
+    font-size: 1.1rem;
+    display: inline-block;
+    
+}
+
+.nav-list-item-button{
+    right: 5vw;
+    font-size: 1.1rem;
+    position: absolute;
+
+}
+
+
+
+  .small-button{
+    width:auto;
+    padding: 10px;
+    background-color: aqua;
+    color: antiquewhite;
+
+  }
+
+  
+  .custom-focus:focus {
+    outline: 2px solid #00BF9C;
+    transition: color 0.3s ease;
+  }
+  
+  
+  .input-group:focus-within label {
+    color: #00BF9C; 
+    transition: color 0.3s ease; 
+  }
