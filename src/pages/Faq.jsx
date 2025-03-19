@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import WordCarousel from "/src/components/WordCarousel.jsx";
 
 function Faq() {
   return (
@@ -43,7 +42,6 @@ function Faq() {
           Contact Us
         </Link>
       </div>
-        <WordCarousel />
     </main>
   );
 }
