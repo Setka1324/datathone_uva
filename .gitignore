@@ -49,3 +49,6 @@ Thumbs.db
 
 # Front
 node_modules/
+
+# Vite config
+vite.config.js
