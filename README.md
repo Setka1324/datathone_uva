@@ -159,7 +159,7 @@ For questions or further information, please open an issue or contact mstemchenk
 
 
 
-/// AMIR ///
+/// AMIR <3 ///
 
 
 First step, startup frontend, check the port (the http one not the local one), anywhere where u see my port in the code replace it with yours cause its based on ur ip n shit, the seed.py run it after u do cd backend, should display database created succesfully, do check seed.py and replace with ur own credentials n shit u might need to make ur own psql db n shit do ask if u cant manage to sort it cause deepseek made me do some bs with virtual env but it worked for me without too. after seed.py succesful do python app.py, for this again check the port its running on like the whole ass link and replace in the vite config and everywhere else where its my ip then check in the console for the status of the requests for the db info should pass all except login one as i havent setup that one. hope this helps more hop on dis whenever if u need run down live xoxo - sKye

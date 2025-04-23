@@ -5,7 +5,8 @@ import Footer from "/src/components/Footer.jsx";
 import Dashboard from "/src/pages/Dashboard.jsx";
 import Contact from "/src/pages/Contact.jsx";
 import Faq from "/src/pages/Faq.jsx";
-import CyberBackground from "/src/components/CyberBackground.jsx"
+import CyberBackground from "/src/components/CyberBackground.jsx";
+import Register from "/src/pages/Register.jsx"
 
 
 
@@ -23,6 +24,8 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<Faq />} />
+            <Route path="/register" element={<Register />} />
+
           </Routes>
         </main>
         <Footer />
