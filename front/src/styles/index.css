@@ -1,171 +1,48 @@
-/* Font import added */
+/* src/index.css */
+
+/* Font import (kept from previous) */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
-/* Kept original Tailwind imports */
+/* --- Palette Definition (NEW) --- */
+
+
+@theme {
+  --color-background: #6B31E5; /* Purple */
+  --color-text-base: #000000;  /* Black */
+  --color-accent-pink: #E53DC0; /* Pink */
+  --color-accent-blue: #60C2F9; /* Light Blue */
+  --color-depth-grey: #D9D9D9; /* Light Grey */
+  --color-bright: #F8F8F2;     /* Off-White */
+  --color-midnight: #181434;
+}
+
+/* --- Tailwind Setup (Kept as provided) --- */
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 @import "tailwindcss";
 
-/* Kept original keyframes */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.neon-text { /* Kept original class */
-  text-shadow: 0 0 2px #00f3ff, 0 0 4px #00f3ff, 0 0 5px #00f3ff;
-}
-
-/* Kept original keyframes */
-@keyframes glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(2px, -2px); }
-  100% { transform: translate(0); }
-}
-
-/* Kept original classes */
-.glitch-text {
-  position: relative;
-  animation: glitch 1s linear infinite;
-}
-.glitch-text::before,
-.glitch-text::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0.8;
-}
-.glitch-text::before {
-  color: #ff00c1;
-  z-index: -1;
-  animation: glitch 3s infinite;
-}
-.glitch-text::after {
-  color: #00fff9;
-  z-index: -2;
-  animation: glitch 2s infinite;
-}
-
-/* Kept original keyframes */
-@keyframes glitch-1 {
-  0% { clip-path: inset(20% 0 30% 0); }
-  100% { clip-path: inset(10% 0 40% 0); }
-}
-@keyframes glitch-2 {
-  0% { clip-path: inset(40% 0 10% 0); }
-  100% { clip-path: inset(30% 0 20% 0); }
-}
-
-/* Kept original keyframes */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Kept original classes */
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out;
-}
-
-/* Kept original variable */
-:root {
-  --color-midnight: #181434;
-}
-
-/* Kept original custom utilities */
-.text-midnight {
-  color: var(--color-midnight);
-}
-.bg-midnight {
-  background-color: var(--color-midnight);
-}
-
-/* Kept original keyframes */
-@keyframes scanline { /* First definition kept */
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-
-/* Kept original class */
-.animate-scanline { /* First definition kept */
-  animation: scanline 6s linear infinite;
-}
-
-/* Kept original class */
-.bg-gradient-radial { /* Definition kept */
-  background: radial-gradient(circle, var(--tw-gradient-stops));
-}
-
-/* Kept original class */
-.dashboard-container {
-  position: relative;
-  z-index: 1;
-}
-
-/* Removed duplicate @layer utilities definition */
-/*
-@layer utilities {
-  .bg-gradient-radial {
-    background: radial-gradient(circle at center, var(--tw-gradient-stops));
-  }
-}
-*/
-
-/* Removed duplicate @keyframes scanline definition */
-/*
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100%); }
-}
-*/
-
-/* Kept original keyframes */
-@keyframes color-pulse {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
-}
-
-/* Removed duplicate .animate-scanline definition */
-/*
-.animate-scanline {
-  animation: scanline 6s linear infinite;
-}
-*/
-
-/* Kept original class */
-.animate-color-pulse {
-  animation: color-pulse 10s linear infinite;
-}
-
-
-/* --- Body rule MODIFIED for theme --- */
+/* --- Base Body Styling (UPDATED) --- */
 body {
-    /* MODIFIED: Set theme font */
-    font-family: 'Orbitron', sans-serif;
+  /* Theme font */
+  font-family: 'Orbitron', sans-serif;
 
-    /* MODIFIED: Set theme default text color */
-    color: #00FFFF; /* hex for neon-blue */
+  /* Theme background and default text color */
+  background-color: var(--color-background); /* Base purple */
+  color: var(--color-text-base);
 
-    /* ADDED: Set theme background color */
-    background-color: #1a1a2e; /* hex for dark-bg */
+  /* --- ADDED: Subtle grid lines using depth-grey color --- */
+  /* Using HSLA for `--color-depth-grey` (#D9D9D9 is approx hsl(0, 0%, 85%)) */
+  background-image:
+    linear-gradient(hsla(0, 0%, 85%, 0.1) 1px, transparent 1px),  /* Horizontal lines @ 10% opacity */
+    linear-gradient(90deg, hsla(0, 0%, 85%, 0.1) 1px, transparent 1px); /* Vertical lines @ 10% opacity */
+  background-size: 30px 30px; /* Adjust grid square size (e.g., 25px, 30px, 40px) */
+  /* --- End Added Grid --- */
 
-    /* ADDED: Basic layout properties */
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-
-    /* ADDED: Background grid effect */
-    background-image:
-      linear-gradient(rgba(0, 255, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 255, 0.04) 1px, transparent 1px);
-    background-size: 25px 25px;
+  /* Basic layout properties */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-
 /* Kept original html, body, #root rules */
 html, body {
     overflow: auto;
@@ -176,17 +53,269 @@ html, body {
     overflow: auto;
 }
 
+/* --- NEW Custom Theme Classes --- */
 
-/* Kept original Leaflet styles */
-.leaflet-marker-icon {
+/* Registration Container */
+.registration-container {
+  background-color: var(--color-bright); /* Use bright off-white for contrast */
+  border: 2px solid var(--color-depth-grey);
+  padding: 1.5rem; /* Equivalent to p-6 */
+  max-width: 42rem; /* Equivalent to max-w-2xl */
+  width: 100%;
+  margin-left: auto; /* Center */
+  margin-right: auto; /* Center */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional subtle shadow */
+}
+@media (min-width: 768px) { /* md breakpoint */
+  .registration-container {
+    padding: 2.5rem; /* Equivalent to md:p-10 */
+  }
+}
+
+/* Input Fields */
+.input-label {
+  display: block;
+  color: var(--color-text-base); /* Black text for labels */
+  margin-bottom: 0.25rem; /* Equivalent to mb-1 */
+  font-size: 0.875rem; /* Equivalent to text-sm */
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* Equivalent to tracking-wider */
+}
+
+.input-styled {
+  width: 100%;
+  padding: 0.5rem 0.75rem; /* Equivalent to px-3 py-2 */
+  background-color: var(--color-bright); /* Off-white background */
+  border: 1px solid var(--color-depth-grey); /* Grey border */
+  color: var(--color-text-base); /* Black text */
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  margin-bottom: 1rem; /* Spacing below input */
+}
+
+.input-styled::placeholder {
+  color: #9CA3AF; /* Tailwind gray-400 approx */
+}
+
+.input-styled:focus {
+  outline: none;
+  border-color: var(--color-accent-blue); /* Blue border on focus */
+  box-shadow: 0 0 0 3px rgba(96, 194, 249, 0.4); /* Blue focus ring using var(--color-accent-blue) with opacity */
+}
+
+/* Textarea specific height */
+.textarea-styled {
+  min-height: 80px;
+}
+
+/* Button Base Styles (minimal layout/font) */
+.button-base {
+  padding: 0.5rem 1.5rem; /* py-2 px-6 */
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* tracking-wider */
+  font-size: 0.875rem; /* text-sm */
+  border: 2px solid transparent; /* Base border */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  cursor: pointer;
+}
+@media (min-width: 768px) { /* md breakpoint */
+  .button-base {
+      font-size: 1rem; /* md:text-base */
+  }
+}
+.button-base:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Registration Type Buttons (Active/Inactive) */
+.button-reg-active {
+  background-color: var(--color-accent-pink); /* Pink background */
+  color: var(--color-bright); /* Off-white text */
+  border-color: var(--color-accent-pink);
+}
+
+.button-reg-inactive {
+  background-color: transparent;
+  color: var(--color-accent-pink); /* Pink text */
+  border-color: var(--color-accent-pink); /* Pink border */
+  border-width: 2px;
+}
+
+.button-reg-inactive:hover {
+  background-color: rgba(229, 61, 192, 0.2); /* Pink background with 20% opacity */
+  color: var(--color-accent-pink); /* Keep text pink */
+}
+
+/* Primary Action Button (e.g., Submit) */
+.button-primary {
+  background-color: var(--color-accent-blue); /* Blue background */
+  color: var(--color-background); /* Off-white text */
+  border-color: var(--color-accent-blue);
+  width: 100%; /* Make submit button full width */
+  margin-top: 1rem; /* mt-4 */
+}
+.button-primary:hover:not(:disabled) {
+  background-color: #4EB8F8; /* Slightly darker blue on hover */
+  border-color: #4EB8F8;
+}
+
+/* Secondary Action Button (e.g., Add/Remove Member) */
+.button-secondary {
+  background-color: transparent;
+  color: var(--color-accent-blue); /* Blue text */
+  border-color: var(--color-accent-blue); /* Blue border */
+}
+.button-secondary:hover:not(:disabled) {
+  background-color: rgba(96, 194, 249, 0.15); /* Light blue background on hover */
+}
+
+/* Specific style for Remove button (smaller, maybe pink accent?) */
+.button-remove {
+  position: absolute;
+  top: 0.5rem; /* top-2 */
+  right: 0.5rem; /* right-2 */
+  padding: 0.25rem 0.5rem !important; /* Override base padding: !py-1 !px-2 */
+  font-size: 0.75rem !important; /* text-xs */
+  background-color: transparent;
+  color: var(--color-accent-pink); /* Pink text */
+  border-color: var(--color-accent-pink); /* Pink border */
+}
+.button-remove:hover:not(:disabled) {
+   background-color: var(--color-accent-pink);
+   color: var(--color-bright);
+}
+
+/* Headings */
+.heading-form {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: bold;
+  margin-bottom: 1.5rem; /* mb-6 */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.1em; /* tracking-widest */
+  color: var(--color-accent-pink); /* Pink heading */
+  /* Add animation if desired, e.g., animation: flicker 1.5s infinite alternate; */
+}
+.heading-section {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: bold;
+  margin-top: 1.5rem; /* mt-6 */
+  margin-bottom: 1rem; /* mb-4 */
+  text-transform: uppercase;
+  color: var(--color-accent-blue); /* Blue section heading */
+}
+
+/* Error/Success Messages */
+.message-error {
+  color: #DC2626; /* Tailwind red-600 */
+  background-color: rgba(220, 38, 38, 0.1);
+  border: 1px solid #E53E3E; /* Tailwind red-500 */
+  padding: 0.5rem; /* p-2 */
+  margin-bottom: 1rem; /* mb-4 */
+  text-align: center;
+}
+.message-success {
+  color: #16A34A; /* Tailwind green-600 */
+  background-color: rgba(22, 163, 74, 0.1);
+  border: 1px solid #34D399; /* Tailwind green-400 */
+  padding: 0.5rem; /* p-2 */
+  margin-bottom: 1rem; /* mb-4 */
+  text-align: center;
+}
+
+
+/* --- Existing Custom CSS (Keep all below as is) --- */
+/* Includes keyframes, .neon-text, .glitch-*, etc. */
+
+@keyframes fade-in { /* Keep */
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.neon-text { /* Keep */
+  text-shadow: 0 0 2px #00f3ff, 0 0 4px #00f3ff, 0 0 5px #00f3ff;
+}
+@keyframes glitch { /* Keep */
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+.glitch-text { /* Keep */
+  position: relative;
+  animation: glitch 1s linear infinite;
+}
+.glitch-text::before,
+.glitch-text::after { /* Keep */
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.8;
+}
+.glitch-text::before { /* Keep */
+  color: #ff00c1;
+  z-index: -1;
+  animation: glitch 3s infinite;
+}
+.glitch-text::after { /* Keep */
+  color: #00fff9;
+  z-index: -2;
+  animation: glitch 2s infinite;
+}
+@keyframes glitch-1 { /* Keep */
+  0% { clip-path: inset(20% 0 30% 0); }
+  100% { clip-path: inset(10% 0 40% 0); }
+}
+@keyframes glitch-2 { /* Keep */
+  0% { clip-path: inset(40% 0 10% 0); }
+  100% { clip-path: inset(30% 0 20% 0); }
+}
+@keyframes spin { /* Keep */
+  to { transform: rotate(360deg); }
+}
+.animate-spin { /* Keep */
+  animation: spin 1s linear infinite;
+}
+.animate-fade-in { /* Keep */
+  animation: fade-in 0.5s ease-out;
+}
+.text-midnight { /* Keep */
+  color: var(--color-midnight);
+}
+.bg-midnight { /* Keep */
+  background-color: var(--color-midnight);
+}
+@keyframes scanline { /* Keep (first instance) */
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+.animate-scanline { /* Keep (first instance) */
+  animation: scanline 6s linear infinite;
+}
+.bg-gradient-radial { /* Keep */
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+.dashboard-container { /* Keep */
+  position: relative;
+  z-index: 1;
+}
+@keyframes color-pulse { /* Keep */
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+.animate-color-pulse { /* Keep */
+  animation: color-pulse 10s linear infinite;
+}
+.leaflet-marker-icon { /* Keep */
   z-index: -1 !important;
 }
-.leaflet-popup-content {
+.leaflet-popup-content { /* Keep */
   fill-opacity: 50%;
 }
-
-/* Kept original Header, Nav, Button, Focus styles */
-.header {
+.header { /* Keep */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -194,7 +323,7 @@ html, body {
     box-shadow: 0 4px 6px -1px rgba(247, 46, 46, 0.1), 0 2px 4px -1px rgba(245, 28, 28, 0.06);
     z-index: 1;
 }
-.nav-list {
+.nav-list { /* Keep */
     list-style: none;
     padding: 0;
     margin: 0;
@@ -203,52 +332,27 @@ html, body {
     margin-right: 20px;
     margin-top: -25px;
 }
-.nav-list-item {
+.nav-list-item { /* Keep */
     margin-left: 10px;
     font-size: 1.1rem;
     display: inline-block;
 }
-.nav-list-item-button{
+.nav-list-item-button{ /* Keep */
     right: 5vw;
     font-size: 1.1rem;
     position: absolute;
 }
-.small-button{
+.small-button{ /* Keep */
     width:auto;
     padding: 10px;
     background-color: aqua;
     color: antiquewhite;
 }
-.custom-focus:focus {
+.custom-focus:focus { /* Keep */
     outline: 2px solid #00BF9C;
     transition: color 0.3s ease;
 }
-.input-group:focus-within label {
+.input-group:focus-within label { /* Keep */
     color: #00BF9C;
     transition: color 0.3s ease;
 }
-
-/* === ADD THESE CUSTOM BUTTON STYLE CLASSES === */
-
-.button-active-pink {
-  background-color: #FF00FF; /* neon-pink */
-  color: #1a1a2e; /* dark-bg */
-  border-color: #FF00FF; /* neon-pink */
-  /* Assuming border-width is handled by Button component or base styles */
-  /* If shadow utility doesn't work, add: */
-  /* box-shadow: 0 0 5px #FF00FF, 0 0 10px #FF00FF, 0 0 15px #FF00FF; */
-}
-
-.button-inactive-pink {
-  background-color: transparent;
-  color: #FF00FF; /* neon-pink */
-  border-color: #FF00FF; /* neon-pink */
-  border-width: 2px; /* Explicitly set border width */
-}
-
-.button-inactive-pink:hover {
-  /* neon-pink background with 20% opacity */
-  background-color: rgba(255, 0, 255, 0.20);
-}
-
-/* ============================================ */

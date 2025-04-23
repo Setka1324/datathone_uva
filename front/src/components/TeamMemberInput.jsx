@@ -10,13 +10,13 @@ const TeamMemberInput = ({ index, memberData, onChange, onRemove }) => {
     };
   
     return (
-      <div className="border border-neon-purple p-4 mb-4 relative bg-dark-bg bg-opacity-50">
-         <h4 className="text-neon-purple mb-2 font-bold">Member #{index + 1}</h4>
+      <div className="border border-background p-4 mb-4 relative bg-depth-grey bg-opacity-50">
+         <h4 className="text-background mb-2 font-bold">Member #{index + 1}</h4>
          {/* Button to remove this member entry */}
          <Button
             onClick={() => onRemove(index)}
             variant="secondary" // Use a variant or specific className
-            className="absolute top-2 right-2 !px-2 !py-1 text-xs !border-neon-pink !text-neon-pink hover:!bg-neon-pink hover:!text-dark-bg"
+            className="absolute top-2 right-2 !px-2 !py-1 text-xs !border-accent-pink !text-accent-pink hover:!bg-accent-pink hover:!text-depth-grey"
           >
             Remove
           </Button>

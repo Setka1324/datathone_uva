@@ -9,40 +9,29 @@ import Button from '/src/components/Button.jsx'; // Assuming Button handles vari
 const Registration = () => {
     const [registrationType, setRegistrationType] = useState('individual');
   
-    // Define the shadow utility class separately (assuming it works from Tailwind config)
-    const activeShadowClass = 'shadow-neon-glow-pink';
+    // Removed shadow definition, assuming base button handles layout
+    // Apply the base button class plus the specific active/inactive class
   
     return (
+      // Use new container class, remove old Tailwind styling
       <motion.div
-        className="w-full max-w-2xl bg-dark-bg border-4 border-neon-blue p-6 md:p-10 shadow-neon-glow-blue" // Base container styles
+        className="registration-container" // Apply new container class
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: "backOut" }}
       >
-        <div className="flex justify-center space-x-4 mb-8">
-          <Button
+        <div className="flex justify-center space-x-4 mb-8"> {/* Keep flex layout */}
+          <Button // Pass classes to Button component
             onClick={() => setRegistrationType('individual')}
-            // Apply custom CSS class names conditionally
-            className={
-              registrationType === 'individual'
-                ? // Active state: Apply custom class + shadow utility
-                  `button-active-pink ${activeShadowClass}`
-                : // Inactive state: Apply custom class
-                  `button-inactive-pink`
-            }
+            // Apply base button class + conditional active/inactive class
+            className={`button-base ${registrationType === 'individual' ? 'button-reg-active' : 'button-reg-inactive'}`}
           >
             Register Individual
           </Button>
-          <Button
+          <Button // Pass classes to Button component
             onClick={() => setRegistrationType('team')}
-             // Apply custom CSS class names conditionally
-             className={
-              registrationType === 'team'
-                 ? // Active state: Apply custom class + shadow utility
-                  `button-active-pink ${activeShadowClass}`
-                : // Inactive state: Apply custom class
-                  `button-inactive-pink`
-             }
+            // Apply base button class + conditional active/inactive class
+            className={`button-base ${registrationType === 'team' ? 'button-reg-active' : 'button-reg-inactive'}`}
           >
             Register Team
           </Button>
@@ -59,5 +48,4 @@ const Registration = () => {
     );
   };
   
-
-export default Registration;
+  export default Registration;

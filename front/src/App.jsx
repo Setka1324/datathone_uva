@@ -19,7 +19,7 @@ function App() {
       <div className="flex flex-col min-h-screen">
       <CyberBackground />
         <Header />
-        <main className="flex-grow p-5 bg-gray-900">
+        <main className="flex-grow p-5">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/contact" element={<Contact />} />

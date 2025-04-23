@@ -9,9 +9,9 @@ const Button = ({ children, onClick, type = 'button', disabled = false, classNam
   const baseStyle = "px-6 py-2 font-bold uppercase tracking-wider transition duration-300 ease-in-out text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed";
 
   // Default variant styles (can be overridden by className)
-  const primaryStyle = "bg-neon-pink text-dark-bg border-2 border-neon-pink hover:bg-opacity-80 hover:shadow-neon-glow-pink";
-  const secondaryStyle = "bg-transparent text-neon-blue border-2 border-neon-blue hover:bg-neon-blue hover:text-dark-bg hover:shadow-neon-glow-blue";
-  const tertiaryStyle = "bg-transparent text-neon-green border-2 border-neon-green hover:bg-neon-green hover:text-dark-bg hover:shadow-neon-glow-green";
+  const primaryStyle = "bg-neon-pink text-background border-2 border-neon-pink hover:bg-opacity-80 hover:shadow-neon-glow-pink";
+  const secondaryStyle = "bg-transparent text-accent-pink border-2 border-accent-pink hover:bg-accent-pink hover:text-background hover:shadow-background";
+  const tertiaryStyle = "bg-transparent text-accent-blue border-2 border-accent-blue hover:bg-accent-blue hover:text-background hover:shadow-background";
 
   let style = primaryStyle; // Default to primary
   if (variant === 'secondary') style = secondaryStyle;

@@ -4,11 +4,11 @@ import { motion } from 'framer-motion';
 
 const Input = ({ label, id, type = 'text', value, onChange, placeholder, required = true, className = '', ...props }) => {
   // Define shared styles applicable to both input and textarea
-  const sharedStyles = `w-full px-3 py-2 bg-light-bg border-2 border-neon-blue text-white placeholder-gray-500 focus:outline-none focus:border-neon-pink focus:shadow-input-glow transition duration-300 ease-in-out ${className}`; // Append extra classNames passed via props
+  const sharedStyles = `w-full px-3 py-2 bg-light-bg border-2 border-accent-blue text-text-base placeholder-gray-500 focus:outline-none focus:border-accent-pink focus:shadow-accent-blue transition duration-300 ease-in-out ${className}`; // Append extra classNames passed via props
 
   return (
     <div className="mb-4 w-full">
-      <label htmlFor={id} className="block text-neon-pink mb-1 text-sm uppercase tracking-wider">
+      <label htmlFor={id} className="block text-accent-pink mb-1 text-sm uppercase tracking-wider">
         {label} {required && '*'}
       </label>
       {/* Conditional Rendering: input vs textarea */}

@@ -118,14 +118,14 @@ const formVariants = {
          animate="visible"
          exit="exit"
       >
-        <h2 className="text-2xl text-neon-green font-bold mb-6 text-center uppercase tracking-widest animation-flicker">
+        <h2 className="text-2xl text-accent-blue font-bold mb-6 text-center uppercase tracking-widest animation-flicker">
           Team Registration
         </h2>
   
         {/* Display general/API errors */}
         {error && <p className="text-red-500 bg-red-900 bg-opacity-50 border border-red-500 p-2 mb-4 text-center">{error}</p>}
         {/* Display success message */}
-        {success && <p className="text-neon-green bg-green-900 bg-opacity-50 border border-neon-green p-2 mb-4 text-center">{success}</p>}
+        {success && <p className="text-accent-blue bg-green-900 bg-opacity-50 border border-accent-blue p-2 mb-4 text-center">{success}</p>}
   
         {/* Team Details Inputs */}
         <Input
@@ -149,7 +149,7 @@ const formVariants = {
         />
   
         {/* Member Section */}
-        <h3 className="text-xl text-neon-purple font-bold mt-6 mb-2 uppercase">
+        <h3 className="text-xl text-background font-bold mt-6 mb-2 uppercase">
           Team Members ({members.length}/{MAX_TEAM_MEMBERS})
         </h3>
         {/* Display member limit error if present */}
@@ -182,7 +182,7 @@ const formVariants = {
         </div>
   
         {/* Submit Button */}
-        <Button type="submit" disabled={loading || success} className="w-full mt-4">
+        <Button type="submit" disabled={loading || success} className="w-full mt-4 button-base">
           {loading ? 'Registering Team...' : (success ? 'Registered!' : 'Register Team')}
         </Button>
       </motion.form>

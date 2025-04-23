@@ -63,14 +63,14 @@ const formVariants = {
         animate="visible"
         exit="exit"
       >
-        <h2 className="text-2xl text-neon-green font-bold mb-6 text-center uppercase tracking-widest animation-flicker">
+        <h2 className="text-2xl text-accent-blue font-bold mb-6 text-center uppercase tracking-widest animation-flicker">
           Individual Registration
         </h2>
   
         {/* Display API/validation errors */}
         {error && <p className="text-red-500 bg-red-900 bg-opacity-50 border border-red-500 p-2 mb-4 text-center">{error}</p>}
         {/* Display success message */}
-        {success && <p className="text-neon-green bg-green-900 bg-opacity-50 border border-neon-green p-2 mb-4 text-center">{success}</p>}
+        {success && <p className="text-accent-blue bg-green-900 bg-opacity-50 border border-accent-blue p-2 mb-4 text-center">{success}</p>}
   
         {/* Input fields using the reusable Input component */}
         <Input
