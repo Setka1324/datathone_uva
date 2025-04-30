@@ -113,18 +113,21 @@ const Header = () => {
           {/* Desktop Authentication Links/Status (Also using the same folder icon) */}
           {isLoggedIn ? (
             <motion.li whileHover={{ scale: 1.05 }} className="text-center">
-              <div className="flex flex-col items-center text-[#FFFFFA]">
+              <div className="flex items-center text-[#FFFFFA]">
                  {/* Use the single folder icon path here */}
                  <img src={folderIconPath} alt="" className="h-10 w-10 lg:h-12 lg:w-12 mb-2" />
-                 <span className="text-sm mb-1">{localStorage.getItem("username")}</span>
-                 <button
+                 <span className="text-xl">{localStorage.getItem("username")}</span>
+                 
+                 
+              </div>
+              <button
                    onClick={handleLogout}
-                   className="text-xs text-[#FFCF53] hover:underline focus:outline-none"
+                   className="text-xl text-[#FFFFFA] hover:text-[#FFCF53] focus:outline-none"
                  >
                    Logout
-                 </button>
-              </div>
+              </button>
             </motion.li>
+            
           ) : (
             <>
               <motion.li whileHover={{ scale: 1.05 }} className="text-center">

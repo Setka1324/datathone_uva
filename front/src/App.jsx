@@ -5,7 +5,9 @@ import Footer from "/src/components/Footer.jsx";
 import Dashboard from "/src/pages/Dashboard.jsx";
 import Contact from "/src/pages/Contact.jsx";
 import Faq from "/src/pages/Faq.jsx";
-import Register from "/src/pages/Register.jsx"
+import Register from "/src/pages/Register.jsx";
+import Login from '/src/pages/Login'; // Adjust path
+
 
 
 
@@ -59,6 +61,7 @@ function Layout() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<Faq />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           {/* Add other routes like /login, /community */}
           {/* <Route path="/login" element={<Login />} /> */}
            {/* <Route path="/community" element={<Community />} />  Assuming Community component exists */}

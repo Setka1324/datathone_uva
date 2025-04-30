@@ -3,7 +3,7 @@ import Registration from '/src/components/Registration.jsx'; // Adjust path if n
 
 function Register() {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center p-4">
+    <div className="w-full flex flex-col items-center justify-center p-4">
        {/* You could add a retro header here */}
        {/* <h1 className="text-4xl text-neon-green font-bold mb-8 uppercase tracking-widest animation-flicker">
            Retro Registration Portal

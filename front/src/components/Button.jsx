@@ -2,31 +2,39 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-// Note: This component is flexible. The active/inactive styling for the registration type
-// buttons is now handled directly via className overrides in Registration.jsx
-// to simplify the logic here. Variants can still be used for other button types.
-const Button = ({ children, onClick, type = 'button', disabled = false, className = '', variant = 'primary' }) => {
-  const baseStyle = "px-6 py-2 font-bold uppercase tracking-wider transition duration-300 ease-in-out text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed";
+// Restyled Button component
+// Variants are simplified/removed; styling primarily driven by className now
+const Button = ({
+  children,
+  onClick,
+  type = 'button',
+  disabled = false,
+  className = '', // Primary way to style now
+  // variant prop can be kept for semantic meaning but might not drive styles directly
+}) => {
+  // Base styles - minimal, relies on className for specific look
+  const baseStyle = `
+    font-pixel uppercase tracking-wider transition duration-200 ease-in-out
+    disabled:opacity-60 disabled:cursor-not-allowed
+    focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-black
+  `;
 
-  // Default variant styles (can be overridden by className)
-  const primaryStyle = "bg-neon-pink text-background border-2 border-neon-pink hover:bg-opacity-80 hover:shadow-neon-glow-pink";
-  const secondaryStyle = "bg-transparent text-accent-pink border-2 border-accent-pink hover:bg-accent-pink hover:text-background hover:shadow-background";
-  const tertiaryStyle = "bg-transparent text-accent-blue border-2 border-accent-blue hover:bg-accent-blue hover:text-background hover:shadow-background";
-
-  let style = primaryStyle; // Default to primary
-  if (variant === 'secondary') style = secondaryStyle;
-  if (variant === 'tertiary') style = tertiaryStyle;
-
+  // Default style for main action buttons (like REGISTER/LOGIN in mockup)
+  // Can be overridden by className prop
+  const defaultMockupStyle = `
+    px-4 py-1 text-sm bg-gray-300 border-2 border-black text-black
+    hover:bg-gray-400 active:bg-gray-500 shadow-md
+  `;
 
   return (
     <motion.button
       type={type}
       onClick={onClick}
       disabled={disabled}
-      // Combine base, variant (as default), and specific className overrides
-      className={`${baseStyle} ${style} ${className}`}
-      whileHover={{ scale: disabled ? 1 : 1.05 }}
-      whileTap={{ scale: disabled ? 1 : 0.95 }}
+      // Apply base, default (if no specific style in className), and passed className
+      className={`${baseStyle} ${!className.includes('bg-') ? defaultMockupStyle : ''} ${className}`}
+      whileHover={{ scale: disabled ? 1 : 1.03 }} // Subtle hover
+      whileTap={{ scale: disabled ? 1 : 0.97 }}   // Subtle tap
     >
       {children}
     </motion.button>

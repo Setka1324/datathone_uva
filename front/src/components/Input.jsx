@@ -2,41 +2,63 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const Input = ({ label, id, type = 'text', value, onChange, placeholder, required = true, className = '', ...props }) => {
-  // Define shared styles applicable to both input and textarea
-  const sharedStyles = `w-full px-3 py-2 bg-light-bg border-2 border-accent-blue text-text-base placeholder-gray-500 focus:outline-none focus:border-accent-pink focus:shadow-accent-blue transition duration-300 ease-in-out ${className}`; // Append extra classNames passed via props
+// Restyled Input component to match the mockup's window style
+const Input = ({
+  label,
+  id,
+  type = 'text',
+  value,
+  onChange,
+  placeholder,
+  required = true,
+  className = '', // Allow passing additional classes
+  name, // Ensure name prop is received
+  ...props // Pass rest of the props like rows for textarea
+}) => {
+  // Styles for the input/textarea element itself
+  const inputStyles = `
+    w-full px-2 py-1 bg-white border border-black text-black text-sm font-sans
+    placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+    transition duration-200 ease-in-out
+    ${className}
+  `; // Removed old styles, added new ones based on mockup
 
   return (
-    <div className="mb-4 w-full">
-      <label htmlFor={id} className="block text-accent-pink mb-1 text-sm uppercase tracking-wider">
-        {label} {required && '*'}
-      </label>
-      {/* Conditional Rendering: input vs textarea */}
+    <div className="mb-3 w-full"> {/* Reduced bottom margin */}
+      {label && ( // Only render label if provided
+        <label
+          htmlFor={id}
+          // Simple black, small text label
+          className="block text-black mb-1 text-xs font-sans"
+        >
+          {label} {required && <span className="text-red-500">*</span>} {/* Optional required indicator */}
+        </label>
+      )}
       {type === 'textarea' ? (
         <motion.textarea
           id={id}
-          name={id} // Ensure name attribute matches state key
+          name={name || id} // Use name prop or fallback to id
           value={value}
           onChange={onChange}
-          placeholder={placeholder || `Enter ${label.toLowerCase()}...`}
+          placeholder={placeholder || ''} // Use placeholder prop directly
           required={required}
-          className={sharedStyles} // Apply shared styles
-          whileFocus={{ scale: 1.02, transition: { duration: 0.2 } }}
-          rows={props.rows || 3} // Default rows or allow passing via props
-          {...props} // Pass rest of the props
+          className={inputStyles} // Apply new styles
+          whileFocus={{ scale: 1.01, transition: { duration: 0.1 } }} // Subtle focus animation
+          rows={props.rows || 3}
+          {...props}
         />
       ) : (
         <motion.input
           id={id}
-          name={id} // Ensure name attribute matches state key
+          name={name || id} // Use name prop or fallback to id
           type={type}
           value={value}
           onChange={onChange}
-          placeholder={placeholder || `Enter ${label.toLowerCase()}...`}
+          placeholder={placeholder || ''} // Use placeholder prop directly
           required={required}
-          className={sharedStyles} // Apply shared styles
-          whileFocus={{ scale: 1.02, transition: { duration: 0.2 } }}
-          {...props} // Pass rest of the props
+          className={inputStyles} // Apply new styles
+          whileFocus={{ scale: 1.01, transition: { duration: 0.1 } }} // Subtle focus animation
+          {...props}
         />
       )}
     </div>
