@@ -2,6 +2,9 @@
 
 /* Font import (kept from previous) */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stick+No+Bills:wght@400;600&display=swap');
+
 
 /* --- Palette Definition (NEW) --- */
 
@@ -21,6 +24,13 @@
 @import "tailwindcss/utilities";
 @import "tailwindcss";
 
+.font-pixel {
+  font-family: 'Press Start 2P', cursive; /* Use the exact font name */
+}
+
+.font-sticknobills {
+  font-family: 'Stick No Bills', sans-serif; /* Added sans-serif fallback */
+}
 /* --- Base Body Styling (UPDATED) --- */
 body {
   /* Theme font */
