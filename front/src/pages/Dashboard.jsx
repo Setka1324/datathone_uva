@@ -2,15 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-// --- Placeholder Icon/Image Paths ---
+// In front/src/components/Dashboard.jsx (or wherever this component is)
 const iconPaths = {
   when: '/assets/email-emoji-smile-smart--Streamline-Pixel.svg',
   where: '/assets/map-navigation-pin-location-1--Streamline-Pixel.svg',
   who: '/assets/user-man-love--Streamline-Pixel.svg',
   what: '/assets/search-coding--Streamline-Pixel.svg',
-  trophy: '/assets/Frame 272.svg',
+  trophy: '/assets/Frame 272.svg', // Assuming Frame 272.svg is also in public/assets
 };
-// --- End Paths ---
 
 const Dashboard = () => {
   return (

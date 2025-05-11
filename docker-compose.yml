@@ -1,0 +1,51 @@
+# docker-compose.yml
+services:
+  frontend:
+    build: ./front
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5001 # For browser access to backend
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=development
+      - SECRET_KEY=your_super_secret_dev_key_CHANGE_ME 
+      # MODIFIED: Point to the 'db' service name
+      - SQLALCHEMY_DATABASE_URI=postgresql://user:password@db:5432/datathon_db 
+      - SQLALCHEMY_TRACK_MODIFICATIONS=False
+      - UPLOAD_FOLDER=/app/uploads
+    depends_on: # ADDED: Make backend wait for db service
+      - db
+    networks:
+      - app-network
+
+  # ADDED/UNCOMMENTED: PostgreSQL database service
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password # Change these in a real scenario
+      - POSTGRES_DB=datathon_db
+    ports: # Optional: Expose DB port to host for direct access/debugging
+      - "5433:5432" # Example: host port 5433 maps to container port 5432
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes: # ADDED/UNCOMMENTED: Define a named volume for persistent database data
+ postgres_data:
