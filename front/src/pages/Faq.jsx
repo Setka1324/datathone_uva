@@ -47,3 +47,6 @@ function Faq() {
 }
 
 export default Faq;
+
+
+// [/Users/Skye/.zshrc]

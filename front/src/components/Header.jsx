@@ -49,7 +49,7 @@ const Header = () => {
   // --- Define Navigation Items (No need for 'icon' property anymore) ---
   const baseNavItems = [
     { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
+    { name: 'Tracks', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
 

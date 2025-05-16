@@ -1,79 +1,64 @@
 // src/components/TeamMemberInput.jsx
 import React from 'react';
-import Input from './Input.jsx'; // Use relative path
-import Button from './Button.jsx'; // Use relative path
+import Input from './Input.jsx';
+import Button from './Button.jsx';
 
-// Corrected TeamMemberInput component to render Input fields
 const TeamMemberInput = ({ index, memberData, onChange, onRemove }) => {
-    // Handler to pass changes up to the parent Registration component
     const handleInputChange = (e) => {
-      // Ensure name attribute is correctly used from the Input component
       onChange(index, e.target.name, e.target.value);
     };
 
     return (
-      // Container for a single member's input fields
-      // Added a subtle border for visual separation
       <div className="border-t border-gray-300 pt-4 mb-4 relative">
-         {/* Member Title */}
          <h4 className="text-sm font-semibold text-black mb-2 font-sans">
            Member #{index + 1}
          </h4>
 
-         {/* Remove Button - only shown for members after the first */}
-         {index > 0 && (
+         {index > 0 && ( // Only show remove for members after the first if there's more than one
              <Button
-                type="button" // Explicitly set type
+                type="button"
                 onClick={() => onRemove(index)}
-                // Minimal styling for the remove button
                 className="absolute top-3 right-0 px-2 py-0.5 text-xs bg-red-100 text-red-700 border border-red-300 hover:bg-red-200 focus:outline-none focus:ring-1 focus:ring-red-400"
              >
                 X Remove
              </Button>
          )}
 
-         {/* Grid layout for the Input fields */}
+         {/* MODIFIED: Adjusted grid for potentially 3 items, or let it wrap.
+             For 3 items, you might want grid-cols-1 sm:grid-cols-3 or make one span.
+             Current sm:grid-cols-2 will make the last item take full width on sm screens if it's the 3rd.
+         */}
          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-3">
-           {/* --- Ensure these are Input components --- */}
            <Input
              label="Name"
              id={`member-name-${index}`}
-             name="name" // This name is used in handleInputChange
-             value={memberData.name || ''} // Use default empty string
+             name="name"
+             value={memberData.name || ''}
              onChange={handleInputChange}
              placeholder="Member's Full Name"
-             required // Assuming all member fields are required
+             required
            />
            <Input
              label="Email"
              id={`member-email-${index}`}
-             name="email" // This name is used in handleInputChange
+             name="email"
              type="email"
-             value={memberData.email || ''} // Use default empty string
+             value={memberData.email || ''}
              onChange={handleInputChange}
              placeholder="Member's Email"
              required
            />
-           <Input
-             label="Password"
-             id={`member-password-${index}`}
-             name="password" // This name is used in handleInputChange
-             type="password"
-             value={memberData.password || ''} // Use default empty string
-             onChange={handleInputChange}
-             placeholder="Create Password"
-             required
-           />
+           {/* REMOVED: Member Password Input */}
            <Input
              label="Expertise"
              id={`member-expertise-${index}`}
-             name="expertise" // This name is used in handleInputChange
-             value={memberData.expertise || ''} // Use default empty string
+             name="expertise"
+             value={memberData.expertise || ''}
              onChange={handleInputChange}
              placeholder="e.g., Frontend Dev"
              required
+             className="sm:col-span-2" // Optional: make expertise span full width on sm screens if it's the last item
            />
-           {/* --- End of Input components --- */}
          </div>
       </div>
     );

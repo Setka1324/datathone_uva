@@ -6,7 +6,7 @@ from models import db, User, Team, TeamMember
 
 auth_bp = Blueprint('auth', __name__)
 
-# Individual registration endpoint
+# Individual registration endpoint (remains unchanged)
 @auth_bp.route('/register/individual', methods=['POST'])
 def register_individual():
     data = request.get_json() or {}
@@ -15,7 +15,7 @@ def register_individual():
     name = data.get('name', '')
     expertise = data.get('expertise')
 
-    if not email or not password or not expertise:
+    if not email or not password or not expertise: # Assuming expertise is mandatory for individuals too
         return jsonify({'success': False, 'error': 'Missing name, email, password, or expertise'}), 400
 
     if User.query.filter_by(email=email).first():
@@ -36,53 +36,86 @@ def register_individual():
         'expertise': user.expertise
     }}), 201
 
-# Team registration endpoint
+# --- MODIFIED Team Registration Endpoint ---
 @auth_bp.route('/register/team', methods=['POST'])
 def register_team():
     data = request.get_json() or {}
     team_name = data.get('team_name')
+    team_password = data.get('team_password') # <-- NEW: Get team password
     description = data.get('description', '')
-    members = data.get('members', [])
+    members_data = data.get('members', []) # Renamed for clarity
 
-    if not team_name or not members:
-        return jsonify({'success': False, 'error': 'Missing team name or members list'}), 400
+    # --- NEW: Validations ---
+    if not team_name or not team_password:
+        return jsonify({'success': False, 'error': 'Missing team name or team password'}), 400
+
+    if not members_data or not isinstance(members_data, list):
+        return jsonify({'success': False, 'error': 'Members list is required and must be a list'}), 400
+        
+    num_members = len(members_data)
+    if not (1 <= num_members <= 4):
+        return jsonify({'success': False, 'error': 'Team must have between 1 and 4 members'}), 400
+    # --- End NEW Validations ---
+
+    # Hash the team password once
+    hashed_team_password = generate_password_hash(team_password)
 
     # Create team
     team = Team(name=team_name, description=description)
     db.session.add(team)
-    db.session.flush()  # to get team.id
+    # It's often better to flush later or let commit handle it unless you need the ID immediately
+    # and are sure the team creation itself won't fail basic DB constraints.
+    # For now, let's try committing everything at the end or flushing within the loop carefully.
+
+    created_users_for_team = [] # To keep track of users created in this transaction
 
     # Create users for each member and link to team
-    for m in members:
-        mem_email = m.get('email')
-        mem_pass = m.get('password')
-        mem_name = m.get('name', '')
-        mem_exp = m.get('expertise')
+    for member_info in members_data:
+        mem_email = member_info.get('email')
+        mem_name = member_info.get('name') # Assuming 'name' is now the key, not 'mem_name'
+        mem_exp = member_info.get('expertise')
 
-        if not mem_email or not mem_pass or not mem_exp:
-            db.session.rollback()
-            return jsonify({'success': False, 'error': 'Each member needs email, password, and expertise'}), 400
+        # --- MODIFIED: Validation for member details ---
+        # Password for member is no longer expected in member_info, expertise is now key
+        if not mem_email or not mem_name or not mem_exp:
+            db.session.rollback() # Rollback if any member has incomplete info
+            return jsonify({'success': False, 'error': 'Each member requires name, email, and expertise'}), 400
 
         if User.query.filter_by(email=mem_email).first():
-            db.session.rollback()
-            return jsonify({'success': False, 'error': f'User {mem_email} already exists'}), 400
+            db.session.rollback() # Rollback if any user already exists
+            return jsonify({'success': False, 'error': f'User with email {mem_email} already exists'}), 400
 
         user = User(
             name=mem_name,
             email=mem_email,
-            password_hash=generate_password_hash(mem_pass),
+            password_hash=hashed_team_password, # <-- MODIFIED: Use hashed team_password
             expertise=mem_exp
         )
         db.session.add(user)
-        db.session.flush()
+        created_users_for_team.append(user) # Add to list
 
-        tm = TeamMember(team_id=team.id, user_id=user.id)
-        db.session.add(tm)
+    # Now that all users are potentially valid, flush to get their IDs
+    # or prepare for linking. If we db.session.add() all users and then the team,
+    # then add TeamMembers, a single commit at the end should work.
 
-    db.session.commit()
+    try:
+        db.session.flush() # Assign IDs to team and newly created users before creating TeamMember links
+
+        for user_instance in created_users_for_team:
+            tm = TeamMember(team_id=team.id, user_id=user_instance.id)
+            db.session.add(tm)
+        
+        db.session.commit() # Commit all changes (team, users, team_members)
+    except Exception as e:
+        db.session.rollback()
+        # Log the exception e for server-side debugging
+        return jsonify({'success': False, 'error': f'An error occurred during team registration: {str(e)}'}), 500
+
+
     return jsonify({'success': True, 'message': 'Team registered successfully', 'team_id': team.id}), 201
 
-# Updated login endpoint with standardized response and refresh token
+# Updated login endpoint (remains unchanged, users will login with their individual email
+# and the (now potentially shared) team password if they were registered via the team route)
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json() or {}
@@ -96,7 +129,6 @@ def login():
     if not user or not check_password_hash(user.password_hash, password):
         return jsonify({'success': False, 'error': 'Invalid credentials'}), 401
 
-    # Create tokens
     access_token = create_access_token(identity=user.id)
     refresh_token = create_refresh_token(identity=user.id)
 
@@ -107,6 +139,6 @@ def login():
         'user': {
             'id': user.id,
             'name': user.name,
-            'expertise': user.expertise
+            'expertise': user.expertise # Or any other user details you want to return
         }
     }), 200
