@@ -7,36 +7,58 @@ from flask_jwt_extended import JWTManager
 from routes.auth import auth_bp
 from routes.tracks import tracks_bp
 from routes.submissions import submissions_bp
-
-# Remove or comment out the initial app = Flask(__name__) from here if it exists at the top level
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+import os # Ensure os is imported if you use os.environ directly here
 
 def create_app():
     app = Flask(__name__) # Create the app instance inside the factory
-    frontend_url = "https://datathon-frontend-626383641337.europe-west4.run.app" # Replace with your actual frontend URL
-    local_dev_url1 = "http://localhost:3000"
-    local_dev_url2 = "http://localhost:3001"
+    
+    # Configure CORS
+    # IMPORTANT: Replace 'https://YOUR_ACTUAL_FRONTEND_CLOUD_RUN_URL' 
+    # with the actual URL of your deployed frontend service from Cloud Run.
+    frontend_custom_domain = os.environ.get("FRONTEND_URL")
+    local_dev_url1 = "http://localhost:3000" 
+    local_dev_url2 = "http://localhost:3001" 
+
     CORS(
         app,
-        resources={r"/api/*": {"origins": [frontend_url, local_dev_url1, local_dev_url2]}},
+        resources={r"/api/*": {"origins": [frontend_custom_domain, local_dev_url1, local_dev_url2]}},
         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization"],
         supports_credentials=True
     )
-    print(f"DEBUG: CORS configured for origins: {[frontend_url, local_dev_url1, local_dev_url2]}") # Added for logging
+    print(f"DEBUG: CORS configured for origins: {[frontend_url, local_dev_url1, local_dev_url2]}")
     
     app.config.from_object(Config)
-    print(f"DEBUG: App config loaded. SQLALCHEMY_DATABASE_URI from app.config: {app.config.get('SQLALCHEMY_DATABASE_URI')}") # Added for logging
+    print(f"DEBUG: App config loaded. SQLALCHEMY_DATABASE_URI from app.config: {app.config.get('SQLALCHEMY_DATABASE_URI')}")
 
+    # Initialize Flask-Limiter
+    limiter = Limiter(
+        key_func=get_remote_address,
+        app=app,
+        default_limits=["200 per day", "50 per hour"], # General limits for all routes
+        storage_uri="memory://", # Good starting point for Cloud Run
+    )
+    print("DEBUG: Flask-Limiter initialized")
+
+    # Initialize other extensions
     db.init_app(app)
-    print("DEBUG: db.init_app(app) called") # Added for logging
+    print("DEBUG: db.init_app(app) called")
 
     JWTManager(app)
-    print("DEBUG: JWTManager configured") # Added for logging
+    print("DEBUG: JWTManager configured")
 
+    # Apply rate limits to specific blueprints BEFORE registering them
+    # This modifies the auth_bp object to include the rate limits.
+    limiter.limit("15 per minute;60 per hour")(auth_bp) 
+    print(f"DEBUG: Rate limit applied to auth_bp: 15 per minute;60 per hour")
+
+    # Register blueprints ONCE
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
     app.register_blueprint(tracks_bp, url_prefix='/api/tracks')
     app.register_blueprint(submissions_bp, url_prefix='/api/submissions')
-    print("DEBUG: Blueprints registered") # Added for logging
+    print("DEBUG: Blueprints registered")
 
     @app.route("/")
     def index():
@@ -50,21 +72,21 @@ def create_app():
     def server_error(error):
         # For production, you'd want more robust logging here
         # import logging
-        # logging.exception('An error occurred during a request.')
-        print(f"DEBUG: Server error encountered: {error}") # Added for logging
+        # app.logger.exception('An error occurred during a request.') # Use app.logger
+        print(f"DEBUG: Server error encountered: {error}") 
         return jsonify({'error': 'Internal server error'}), 500
 
     with app.app_context():
-        print("DEBUG: Entered app_context for db.create_all()") # Added for logging
+        print("DEBUG: Entered app_context for db.create_all()")
         try:
-            db.create_all() # This should now work against the created 'datathon_db'
-            print("DEBUG: db.create_all() completed successfully (or tables already exist).") # Added for logging
+            db.create_all() 
+            print("DEBUG: db.create_all() completed successfully (or tables already exist).")
         except Exception as e:
-            print(f"DEBUG: ERROR during db.create_all(): {e}") # Added for logging
+            print(f"DEBUG: ERROR during db.create_all(): {e}")
             # Optionally re-raise the exception if you want the app to fail hard here
             # raise e
 
-    print("DEBUG: Exiting create_app()") # Added for logging
+    print("DEBUG: Exiting create_app()")
     return app
 
 app = create_app()

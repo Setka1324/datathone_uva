@@ -1,11 +1,13 @@
 // src/api-helper/auth.js
 import axios from 'axios';
 
-// Base URL for your Flask backend
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:5001';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://datathon-backend-626383641337.europe-west4.run.app';
+const TARGET_AUDIENCE_URL = '34.8.239.212'; // The URL of your backend service
+const METADATA_SERVER_TOKEN_URL = `http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/identity?audience=${TARGET_AUDIENCE_URL}`;
 
-// Create an Axios instance for API calls
+// Fallback for local development where VITE_API_BASE_URL might be set,
+// or when metadata server is not available.
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://dice-impact.com'; // Use your custom domain here
+
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -13,84 +15,89 @@ const apiClient = axios.create({
   },
 });
 
-/**
- * Registers an individual user.
- * @param {object} userData - Object containing name, email, password, expertise.
- * @returns {Promise<object>} - The response data from the API.
- * @throws {object} - An error object with message and status.
- */
+// Function to get the OIDC token from metadata server (when running on Cloud Run)
+const getIdToken = async () => {
+  // This environment variable is automatically set by Cloud Run
+  if (import.meta.env.PROD && window.GoogleComputeEng) { // A way to check if running on GCP environment; window.GoogleComputeEng might not be reliable.
+                                                         // A better check is if a specific Cloud Run env var is present, e.g., K_SERVICE.
+                                                         // Or, more simply, attempt the fetch and fallback if it fails.
+    try {
+      const response = await fetch(METADATA_SERVER_TOKEN_URL, {
+        headers: {
+          'Metadata-Flavor': 'Google',
+        },
+      });
+      if (!response.ok) {
+        console.error('Failed to fetch ID token from metadata server:', response.status);
+        return null;
+      }
+      const token = await response.text();
+      return token;
+    } catch (error) {
+      console.error('Error fetching ID token:', error);
+      return null;
+    }
+  }
+  return null; // Not on Cloud Run or error fetching
+};
+
+// Interceptor to add the token to requests
+apiClient.interceptors.request.use(async (config) => {
+  // Only add token if we are likely on Cloud Run and calling the production backend
+  // This logic might need refinement based on how VITE_API_BASE_URL is used.
+  // If API_BASE_URL is the production URL, try to get a token.
+  if (config.baseURL === TARGET_AUDIENCE_URL) {
+    const token = await getIdToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+// Your existing API functions (registerIndividual, registerTeam, loginUser)
+// remain largely the same but will now use the modified apiClient.
+
 export const registerIndividual = async (userData) => {
   try {
-    // Includes '/api/auth' prefix based on Flask Blueprint registration
     const response = await apiClient.post('/api/auth/register/individual', userData);
-    // Check if the response indicates success based on your backend structure
     if (!response.data || !response.data.success) {
         throw new Error(response.data?.message || 'Registration failed: Unknown error');
     }
     return response.data;
   } catch (error) {
     console.error("API Error (Individual Reg):", error.response || error.message);
-    // Prioritize backend error message if available
     const message = error.response?.data?.error || error.response?.data?.message || `Request failed: ${error.message || 'Network Error or CORS issue'}`;
     throw { message: message, status: error.response?.status };
    }
 };
 
-/**
- * Registers a team.
- * @param {object} teamData - Object containing teamName, description, and members array.
- * @returns {Promise<object>} - The response data from the API.
- * @throws {object} - An error object with message and status.
- */
 export const registerTeam = async (teamData) => {
   try {
-    // Map frontend state names to backend expected names if necessary
-    const payload = {
-        team_name: teamData.teamName,
-        description: teamData.description,
-        members: teamData.members.map(m => ({
-            name: m.name,
-            email: m.email,
-            password: m.password,
-            expertise: m.expertise
-        }))
-    };
-    // Includes '/api/auth' prefix based on Flask Blueprint registration
+    const payload = { /* ... your payload ... */ };
     const response = await apiClient.post('/api/auth/register/team', payload);
-     // Check if the response indicates success based on your backend structure
-    if (!response.data || !response.data.success) {
+     if (!response.data || !response.data.success) {
         throw new Error(response.data?.message || 'Team registration failed: Unknown error');
     }
     return response.data;
   } catch (error) {
     console.error("API Error (Team Reg):", error.response || error.message);
-    // Prioritize backend error message if available
     const message = error.response?.data?.error || error.response?.data?.message || `Request failed: ${error.message || 'Network Error or CORS issue'}`;
     throw { message: message, status: error.response?.status };
   }
 };
 
-/**
- * Logs in a user.
- * @param {object} credentials - Object containing email and password.
- * @returns {Promise<object>} - The response data from the API (including tokens and user info).
- * @throws {object} - An error object with message and status.
- */
 export const loginUser = async (credentials) => {
   try {
-    // Includes '/api/auth' prefix based on Flask Blueprint registration
     const response = await apiClient.post('/api/auth/login', credentials);
-    // Check if the response indicates success based on your backend structure
     if (!response.data || !response.data.success) {
-      // Use the specific error message from the backend if available
       throw new Error(response.data?.error || 'Login failed: Unknown error');
     }
-    // Successful login, return the data (tokens, user info)
     return response.data;
   } catch (error) {
     console.error("API Error (Login):", error.response || error.message);
-    // Prioritize backend error message ('Invalid credentials', 'Missing email or password')
-    // Fallback to generic error message
     const message = error.response?.data?.error || error.response?.data?.message || `Login failed: ${error.message || 'Network Error or CORS issue'}`;
     throw { message: message, status: error.response?.status };
   }
