@@ -28,7 +28,7 @@ def create_app():
         allow_headers=["Content-Type", "Authorization"],
         supports_credentials=True
     )
-    print(f"DEBUG: CORS configured for origins: {[frontend_url, local_dev_url1, local_dev_url2]}")
+    print(f"DEBUG: CORS configured for origins: {[frontend_custom_domain, local_dev_url1, local_dev_url2]}")
     
     app.config.from_object(Config)
     print(f"DEBUG: App config loaded. SQLALCHEMY_DATABASE_URI from app.config: {app.config.get('SQLALCHEMY_DATABASE_URI')}")

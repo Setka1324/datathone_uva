@@ -1,33 +1,30 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } // MODIFIED: Added useNavigate
+from "react-router-dom";
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { motion, AnimatePresence } from "framer-motion";
+// import axios from 'axios'; // Not used in this component
+import { motion } from "framer-motion"; // MODIFIED: Removed AnimatePresence as it's not needed
 
 // --- Define SINGLE Icon Path ---
-// IMPORTANT: Replace this with the ACTUAL path to your single folder SVG file
 const folderIconPath = '/assets/File1.svg';
 // --- End Icon Path ---
 
-
-
-
-
 // --- Main Header Component ---
 const Header = () => {
-  const [token, setToken] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // Removed isMenuOpen and toggleMenu as they are no longer needed
 
-  // --- Authentication Logic (Keep mostly as is) ---
+  const navigate = useNavigate(); // MODIFIED: Added for logout navigation
+
+  // --- Authentication Logic ---
   useEffect(() => {
     const savedToken = localStorage.getItem('authToken');
-    const username = localStorage.getItem('username');
-    if (savedToken && username) {
-       setToken(savedToken);
+    // const username = localStorage.getItem('username'); // Username not directly used in nav items structure now
+    if (savedToken) { // Simplified check
        setIsLoggedIn(true);
     } else {
-       localStorage.removeItem('authToken');
+       localStorage.removeItem('authToken'); // Ensure all relevant items are cleared
        localStorage.removeItem('username');
+       localStorage.removeItem('userId'); // Assuming you might store userId too
        setIsLoggedIn(false);
     }
   }, []);
@@ -35,195 +32,104 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('username');
-    setToken('');
+    localStorage.removeItem('userId');
     setIsLoggedIn(false);
-    setIsMenuOpen(false);
-    window.location.reload();
+    navigate('/'); // Navigate to home or login page after logout
+    // window.location.reload(); // Reloading can be disruptive, navigate instead
   };
   // --- End Authentication Logic ---
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  // --- Define Navigation Items (No need for 'icon' property anymore) ---
+  // --- Define Unified Navigation Items ---
   const baseNavItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Tracks', path: '/about' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Home', path: '/' , type: 'link'},
+    { name: 'Tracks', path: '/about', type: 'link' },
+    { name: 'Contact', path: '/contact', type: 'link' },
   ];
 
-  const loggedInNavItems = [
-    ...baseNavItems,
-    { name: 'Community', path: '/community' },
-  ];
+  let navItemsToDisplay = [];
 
-  const loggedOutNavItems = [...baseNavItems];
-
-  const currentNavItems = isLoggedIn ? loggedInNavItems : loggedOutNavItems;
+  if (isLoggedIn) {
+    navItemsToDisplay = [
+      ...baseNavItems,
+      { name: 'Community', path: '/community', type: 'link' },
+      // { name: localStorage.getItem('username') || 'Profile', path: '/profile', type: 'link' }, // Example Profile link
+      { name: 'Logout', action: handleLogout, type: 'button' }
+    ];
+  } else {
+    navItemsToDisplay = [
+      ...baseNavItems,
+      { name: 'Register', path: '/register', type: 'link' },
+      { name: 'Login', path: '/login', type: 'link' }
+    ];
+  }
   // --- End Navigation Items ---
 
-
   return (
-    <header className="relative z-30 pt-6 overflow-hidden">
-      
-
-      <nav className="relative z-10 container mx-auto px-4">
-
-        {/* --- Mobile Menu Trigger (Top Right - Using the same folder icon) --- */}
-        <div className="absolute top-0 right-4 md:hidden">
-          <button
-            onClick={toggleMenu}
-            className="flex flex-col items-center text-[#FFFFFA] focus:outline-none p-2"
-            aria-label="Toggle menu"
-            aria-expanded={isMenuOpen}
-          >
-            {/* Use the single folder icon path here */}
-            <img src={folderIconPath} alt="Menu" className="h-8 w-8" />
-            <span className="text-xs mt-1">Menu</span>
-          </button>
-        </div>
-        {/* --- End Mobile Menu Trigger --- */}
-
-
-        {/* --- Desktop Navigation (Centered - Using the same folder icon) --- */}
-        <ul className="hidden md:flex justify-center items-end space-x-12 lg:space-x-16">
-          {/* Map through current navigation items */}
-          {currentNavItems.map((item) => (
+    <header className="relative z-30 pt-4 sm:pt-6 overflow-visible"> {/* Adjusted pt and overflow */}
+      <nav className="relative z-10 container mx-auto px-2 sm:px-4">
+        {/* --- Unified Navigation (Always Flex, Responsive Scaling) --- */}
+        <ul className="flex justify-center items-end flex-wrap 
+                       gap-x-1 gap-y-2 
+                       sm:gap-x-2 
+                       md:gap-x-4 
+                       lg:gap-x-8 
+                       xl:gap-x-12"> 
+                       {/* Using gap for spacing, more robust with flex-wrap */}
+          {navItemsToDisplay.map((item) => (
             <motion.li
               key={item.name}
               whileHover={{ scale: 1.05 }}
               className="text-center"
             >
-              <Link
-                to={item.path}
-                className="flex flex-col items-center text-[#FFFFFA] hover:text-[#FFCF53] transition-colors duration-200 group"
-              >
-                {/* Use the single folder icon path here */}
-                <img
-                  src={folderIconPath}
-                  alt="" // Decorative icon
-                  className="h-10 w-10 lg:h-12 lg:w-12 mb-2 transition-transform duration-200 group-hover:-translate-y-1"
-                />
-                <span className="text-lg">{item.name}</span>
-              </Link>
+              {item.type === 'link' ? (
+                <Link
+                  to={item.path}
+                  className="flex flex-col items-center text-[#FFFFFA] hover:text-[#FFCF53] transition-colors duration-200 group p-1"
+                >
+                  <img
+                    src={folderIconPath}
+                    alt="" // Decorative icon
+                    className="h-6 w-6 mb-0.5 
+                               sm:h-8 sm:w-8 sm:mb-1
+                               md:h-10 md:w-10 md:mb-1
+                               lg:h-12 lg:w-12 lg:mb-2 
+                               transition-transform duration-200 group-hover:-translate-y-1"
+                  />
+                  <span className="text-[10px] leading-tight 
+                                 sm:text-xs 
+                                 md:text-sm 
+                                 lg:text-base"> {/* Adjusted base text size */}
+                    {item.name}
+                  </span>
+                </Link>
+              ) : ( // item.type === 'button'
+                <button
+                  onClick={item.action}
+                  className="flex flex-col items-center text-[#FFFFFA] hover:text-[#FFCF53] transition-colors duration-200 group p-1"
+                >
+                  <img
+                    src={folderIconPath}
+                    alt=""
+                    className="h-6 w-6 mb-0.5 
+                               sm:h-8 sm:w-8 sm:mb-1
+                               md:h-10 md:w-10 md:mb-1
+                               lg:h-12 lg:w-12 lg:mb-2 
+                               transition-transform duration-200 group-hover:-translate-y-1"
+                  />
+                  <span className="text-[10px] leading-tight 
+                                 sm:text-xs 
+                                 md:text-sm 
+                                 lg:text-base">
+                    {item.name}
+                  </span>
+                </button>
+              )}
             </motion.li>
           ))}
-
-          {/* Desktop Authentication Links/Status (Also using the same folder icon) */}
-          {isLoggedIn ? (
-            <motion.li whileHover={{ scale: 1.05 }} className="text-center">
-              <div className="flex items-center text-[#FFFFFA]">
-                 {/* Use the single folder icon path here */}
-                 <img src={folderIconPath} alt="" className="h-10 w-10 lg:h-12 lg:w-12 mb-2" />
-                 <span className="text-xl">{localStorage.getItem("username")}</span>
-                 
-                 
-              </div>
-              <button
-                   onClick={handleLogout}
-                   className="text-xl text-[#FFFFFA] hover:text-[#FFCF53] focus:outline-none"
-                 >
-                   Logout
-              </button>
-            </motion.li>
-            
-          ) : (
-            <>
-              <motion.li whileHover={{ scale: 1.05 }} className="text-center">
-                <Link to="/register" className="flex flex-col items-center text-[#FFFFFA] hover:text-[#FFCF53] transition-colors duration-200 group">
-                   {/* Use the single folder icon path here */}
-                   <img src={folderIconPath} alt="" className="h-10 w-10 lg:h-12 lg:w-12 mb-2 transition-transform duration-200 group-hover:-translate-y-1"/>
-                   <span className="text-lg">Register</span>
-                </Link>
-              </motion.li>
-              <motion.li whileHover={{ scale: 1.05 }} className="text-center">
-                 <Link to="/login" className="flex flex-col items-center text-[#FFFFFA] hover:text-[#FFCF53] transition-colors duration-200 group">
-                   {/* Use the single folder icon path here */}
-                   <img src={folderIconPath} alt="" className="h-10 w-10 lg:h-12 lg:w-12 mb-2 transition-transform duration-200 group-hover:-translate-y-1"/>
-                   <span className="text-lg">Login</span>
-                 </Link>
-              </motion.li>
-            </>
-          )}
         </ul>
-        {/* --- End Desktop Navigation --- */}
-
+        {/* --- End Unified Navigation --- */}
       </nav>
-
-      {/* --- Mobile Menu Overlay (Using the same folder icon) --- */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -50 }}
-            transition={{ type: "tween", ease: "easeInOut", duration: 0.3 }}
-            className="fixed inset-0 bg-white z-40 p-8 pt-24 md:hidden overflow-y-auto"
-          >
-            <div className="flex flex-col items-start space-y-6">
-
-              {/* Map through current navigation items */}
-              {currentNavItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  className="flex items-center text-gray-800 hover:text-[#FFB703] text-xl w-full py-2"
-                  onClick={toggleMenu}
-                >
-                  {/* Use the single folder icon path here */}
-                  <img src={folderIconPath} alt="" className="h-6 w-6 mr-4" />
-                  <span>{item.name}</span>
-                </Link>
-              ))}
-
-              {/* Mobile Authentication Links (Also using the same folder icon) */}
-              <div className="pt-6 border-t border-gray-200 w-full space-y-6">
-                {isLoggedIn ? (
-                  <>
-                    <div className="flex items-center text-gray-700 pl-10"> {/* Indent to align with text */}
-                       <span>Logged in as: {localStorage.getItem("username")}</span>
-                    </div>
-                    <button
-                      onClick={() => { handleLogout(); toggleMenu(); }}
-                      className="flex items-center text-red-600 hover:text-red-800 text-xl w-full py-2"
-                    >
-                      {/* Use the single folder icon path here */}
-                      <img src={folderIconPath} alt="" className="h-6 w-6 mr-4" />
-                      <span>Logout</span>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/register"
-                      className="flex items-center text-gray-800 hover:text-[#FFB703] text-xl w-full py-2"
-                      onClick={toggleMenu}
-                    >
-                      {/* Use the single folder icon path here */}
-                      <img src={folderIconPath} alt="" className="h-6 w-6 mr-4" />
-                      <span>Register</span>
-                    </Link>
-                    <Link
-                      to="/login"
-                      className="flex items-center text-gray-800 hover:text-[#FFB703] text-xl w-full py-2"
-                      onClick={toggleMenu}
-                    >
-                      {/* Use the single folder icon path here */}
-                      <img src={folderIconPath} alt="" className="h-6 w-6 mr-4" />
-                      <span>Login</span>
-                    </Link>
-                  </>
-                )}
-              </div>
-
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      {/* --- End Mobile Menu Overlay --- */}
-
+      {/* Mobile Menu Overlay and Toggle Button have been removed */}
     </header>
   );
 };
