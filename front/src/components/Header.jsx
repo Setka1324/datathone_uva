@@ -42,8 +42,6 @@ const Header = () => {
   // --- Define Unified Navigation Items ---
   const baseNavItems = [
     { name: 'Home', path: '/' , type: 'link'},
-    { name: 'Tracks', path: '/about', type: 'link' },
-    { name: 'Contact', path: '/contact', type: 'link' },
   ];
 
   let navItemsToDisplay = [];
@@ -51,8 +49,7 @@ const Header = () => {
   if (isLoggedIn) {
     navItemsToDisplay = [
       ...baseNavItems,
-      { name: 'Community', path: '/community', type: 'link' },
-      // { name: localStorage.getItem('username') || 'Profile', path: '/profile', type: 'link' }, // Example Profile link
+      { name: localStorage.getItem('username') || 'Profile'}, // Example Profile link
       { name: 'Logout', action: handleLogout, type: 'button' }
     ];
   } else {

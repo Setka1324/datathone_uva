@@ -1,51 +1,40 @@
-import React from 'react'; // Make sure React is imported if not already
-
-
+import React from 'react';
 
 function Footer() {
   const currentYear = new Date().getFullYear(); // Get the current year dynamically
 
   return (
-    <footer className="bg-dark-bg font-retro text-gray-200 py-4 mt-auto border-t-2 border-neon-blue shadow-neon-glow-blue">
-      {/* Using shadow for a subtle top glow effect instead of just border */}
-      <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-sm">
-        {/* Site Logo - Using a primary neon color */}
-        <span className="text-lg md:text-xl font-bold text-neon-green mb-2 md:mb-0">
-          EcoVision
-        </span>
-
-        {/* Links - Using a secondary neon color on hover */}
-        <div className="flex flex-wrap justify-center space-x-4 md:space-x-6 my-2 md:my-0">
-          <a
-            href="https://climate.nasa.gov/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-neon-pink transition-colors duration-300 ease-in-out"
-          >
-            NASA Climate
-          </a>
-          <a
-            href="https://www.ipcc.ch/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-neon-pink transition-colors duration-300 ease-in-out"
-          >
-            IPCC Reports
-          </a>
-          <a
-            href="https://www.un.org/en/climatechange"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-neon-pink transition-colors duration-300 ease-in-out"
-          >
-            UN Climate
-          </a>
+    <footer 
+      className="bg-[#C0C0C0] font-pixel text-black p-2 mt-auto border-2 border-r-black border-b-black border-l-white border-t-white"
+      // Style explanation:
+      // bg-[#C0C0C0]: Light gray background, same as your login window.
+      // font-pixel: Assumes you have a 'font-pixel' class defined in Tailwind for your pixelated font.
+      // text-black: Black text color for readability on the gray background.
+      // p-2: Small padding for a compact footer/status bar feel.
+      // mt-auto: Pushes the footer to the bottom of the viewport if content is short.
+      // border-2 border-r-black border-b-black border-l-white border-t-white: 
+      //   Creates a 3D "raised" or "outset" border effect, identical to your login window's border,
+      //   making it look like a consistent UI panel.
+    >
+      <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-xs">
+        {/* Left side: Copyright information */}
+        <div className="mb-2 sm:mb-0">
+          &copy; {currentYear} Datathon UVA. All Rights Reserved.
         </div>
 
-        {/* Copyright - Slightly dimmer text, updated year */}
-        <small className="text-gray-400 mt-2 md:mt-0 text-center md:text-right">
-          &copy; {currentYear} EcoVision. All rights reserved.
-        </small>
+        {/* Right side: Navigation Links */}
+        {/* These links are placeholders. Update href to actual paths. */}
+        <div className="flex space-x-4">
+          <a href="/about" className="hover:underline">
+            About
+          </a>
+          <a>
+            Made by Bloom 
+          </a>
+          <a className="text-[#C0C0C0]">
+            Mark+Amir
+          </a>
+        </div>
       </div>
     </footer>
   );
