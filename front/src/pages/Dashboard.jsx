@@ -33,7 +33,7 @@ const tracksData = [
   },
   {
     id: 4,
-    title: 'Track 4', // Mockup shows this title twice
+    title: 'Track 4', 
     datasetText: 'TBA',
     directionsText: 'TBA',
   },
@@ -43,7 +43,7 @@ const tracksData = [
 const TrackCard = ({ track, index }) => {
   return (
     <motion.div
-      className="bg-gray-100 border-2 border-black flex flex-col" // Added flex flex-col
+      className="bg-gray-100 border-2 border-black flex flex-col" 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -58,7 +58,7 @@ const TrackCard = ({ track, index }) => {
       </div>
 
       {/* Card Content */}
-      <div className="p-4 flex-grow flex flex-col"> {/* Added flex-grow and flex-col */}
+      <div className="p-4 flex-grow flex flex-col"> 
         <h3 className="font-pixel text-md text-black text-center my-2 uppercase">
           {track.title}
         </h3>
@@ -77,7 +77,6 @@ const TrackCard = ({ track, index }) => {
           </p>
         </div>
 
-        {/* Download Button - Pushed to bottom */}
         <div className="mt-auto pt-2 text-center">
           <button
             type="button"
@@ -94,35 +93,39 @@ const TrackCard = ({ track, index }) => {
 
 const Dashboard = () => {
   const blueGridBackgroundStyle = {
-    backgroundColor: '#93c5fd', // A light blue, closer to mockup (Tailwind's blue-300)
+    backgroundColor: '#93c5fd', 
     backgroundImage: `
       linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px)
     `,
-    backgroundSize: '20px 20px', // Adjust grid size as needed
+    backgroundSize: '20px 20px', 
+  };
+
+  // MODIFIED: Scroll handler to target the tracks section
+  const handleScrollToTracks = () => {
+    const tracksSection = document.getElementById('tracks-section');
+    if (tracksSection) {
+      tracksSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start' 
+      });
+    }
   };
 
   return (
-    // Main outer container - removed pb-28 to let the new section define its own padding
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex flex-col items-center justify-center min-h-full text-center px-4 pt-36" // Removed pb-28
+      className="flex flex-col items-center justify-center min-h-full text-center px-4 pt-36" 
     >
-      {/* --- Main Title (Pixel Font) --- */}
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-pixel text-white mb-8 uppercase tracking-wider" style={{ textShadow: '2px 2px #333' }}>
         Welcome to the
       </h1>
 
-      {/* --- "Window" Container --- */}
       <div className="bg-gray-100 border-4 border-black shadow-lg w-full max-w-3xl relative">
-
-        {/* Title Bar (Pixel Font) - No changes */}
         <div className="bg-purple-600 text-white flex items-center justify-between px-4 py-2 border-b-4 border-black font-pixel">
            <span className="font-bold text-sm md:text-base uppercase">D.I.C.E Impact-thon</span>
         </div>
-
-        {/* Content Area (Stick No Bills Font) */}
         <div className="p-6 md:p-8 pb-16 sm:pb-24 md:pb-28 text-left text-sm md:text-base leading-relaxed text-black font-sticknobills">
           <p className="mb-6">
             The D.I.C.E. ImpactThon is a 2-day challenge where UvA students from all
@@ -161,18 +164,20 @@ const Dashboard = () => {
             Want to know more?
           </p>
         </div>
-        {/* --- End Content Area --- */}
 
-        {/* --- Absolutely Positioned Buttons --- */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 w-full px-4 sm:px-0 sm:w-auto">
             <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
                 <Link
-                    to="/tracks"
+                    // MODIFIED: Using onClick with the new handler.
+                    // Note: If this Link component was meant to navigate elsewhere (e.g., to="/#tracks-section"),
+                    // that would be a different approach using react-router-hash-link or similar.
+                    // For now, assuming it's just a scroll trigger on the current page.
+                    onClick={handleScrollToTracks}
                     className="font-pixel uppercase
                                px-4 py-2 text-xs
                                sm:px-6 sm:py-3 sm:text-sm 
                                md:text-base
-                               bg-gray-100 text-black border-2 border-black hover:bg-gray-300 transition-colors shadow-md whitespace-nowrap"
+                               bg-gray-100 text-black border-2 border-black hover:bg-gray-300 transition-colors shadow-md whitespace-nowrap cursor-pointer" // Added cursor-pointer
                 >
                     Explore tracks
                 </Link>
@@ -188,9 +193,6 @@ const Dashboard = () => {
                 </Link>
             </div>
         </div>
-        {/* --- End Buttons --- */}
-
-        {/* --- Absolutely Positioned Trophy --- */}
         <div
           className="absolute bottom-0 right-2 sm:right-3 translate-y-1/2 translate-x-1/2 z-10 pointer-events-none"
         >
@@ -201,15 +203,15 @@ const Dashboard = () => {
                            sm:h-64 sm:w-64"
             />
         </div>
-        {/* --- End Trophy --- */}
-      </div> {/* <-- End "Window" Container */}
+      </div>
 
       {/* --- NEW SECTION: Explore Our Tracks --- */}
       <section 
-        className="w-full py-16 mt-20 md:mt-28" // Added margin-top to space from window above, py-16 for vertical padding
+        id="tracks-section" // ADDED ID for scrolling target
+        className="w-full py-16 mt-20 md:mt-28" 
         style={blueGridBackgroundStyle}
       >
-        <div className="container mx-auto px-4"> {/* Inner container for content padding */}
+        <div className="container mx-auto px-4"> 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-pixel text-black mb-12 md:mb-16 uppercase text-center tracking-wider" style={{ textShadow: '2px 2px #A0A0A0' }}>
             Explore Our Tracks
           </h2>
@@ -220,9 +222,7 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-      {/* --- End NEW SECTION --- */}
-
-    </motion.div> // End Main outer container
+    </motion.div>
   );
 };
 
