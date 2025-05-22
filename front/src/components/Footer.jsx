@@ -19,16 +19,13 @@ function Footer() {
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center text-xs">
         {/* Left side: Copyright information */}
         <div className="mb-2 sm:mb-0">
-          &copy; {currentYear} Datathon UVA. All Rights Reserved.
+          &copy; {currentYear} D.I.C.E. IMPACT All Rights Reserved.
         </div>
 
         {/* Right side: Navigation Links */}
         {/* These links are placeholders. Update href to actual paths. */}
         <div className="flex space-x-4">
-          <a href="/about" className="hover:underline">
-            About
-          </a>
-          <a>
+          <a href="https://www.bloom-uva.nl/" className="hover:underline">
             Made by Bloom 
           </a>
           <a className="text-[#C0C0C0]">

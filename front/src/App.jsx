@@ -59,7 +59,7 @@ function Layout() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<Faq />} />
+          <Route path="/tracks" element={<Faq />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           {/* Add other routes like /login, /community */}

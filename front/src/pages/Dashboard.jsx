@@ -8,34 +8,34 @@ const iconPaths = {
   where: '/assets/map-navigation-pin-location-1--Streamline-Pixel.svg',
   who: '/assets/user-man-love--Streamline-Pixel.svg',
   what: '/assets/search-coding--Streamline-Pixel.svg',
-  trophy: '/assets/Frame 272.svg', // Assuming Frame 272.svg is also in public/assets
+  trophy: '/assets/Frame_272.svg', // Assuming Frame 272.svg is also in public/assets
 };
 
 // Mock data for the track cards
 const tracksData = [
   {
     id: 1,
-    title: 'PSYCHOLOGY',
-    datasetText: 'Anonymized survey data on student well-being and study habits. Includes metrics on stress levels, social interaction, and academic performance over three semesters.',
-    directionsText: 'Develop an intervention to improve student mental health. Analyze patterns to predict burnout risk. Design a tool for personalized study recommendations.',
+    title: 'Track 1',
+    datasetText: 'For this track you will use a dataset on student wellbeing and movement patterns. It includes metrics on stress level, social interactions and time spent at different places.',
+    directionsText: 'How do wellbeing, movement, and campus environment relate? How can we create an improved university for everyone?',
   },
   {
     id: 2,
-    title: 'SOCIAL SCIENCES #1',
-    datasetText: 'Publicly available data on urban mobility patterns in Amsterdam, including public transport usage, bike-sharing, and traffic flow before and after a new policy.',
-    directionsText: 'Assess the impact of the new mobility policy. Propose solutions for reducing congestion. Design an app to promote sustainable transport choices.',
+    title: 'Track 2',
+    datasetText: 'This dataset covers almost 40 years of survey data from many European of values about family, work, religion, politics, and society.',
+    directionsText: "There has been a rise in anti-democratic values and increasing polarisation. How can this be explained by changes in individual's values and how can we combat this?",
   },
   {
     id: 3,
-    title: 'SUSTAINABILITY',
-    datasetText: 'Data on energy consumption, waste generation, and recycling rates across different UvA campus buildings over the past five years. Includes building type and occupancy.',
-    directionsText: 'Identify key areas for improving campus sustainability. Develop a gamified app to encourage eco-friendly behavior among students and staff. Model future impact.',
+    title: 'Track 3',
+    datasetText: 'Here, you will be provided with a dataset containing thousands of news headlines/descriptions.',
+    directionsText: 'Are newspapers contributing to more emotional headlines? How are themes and sentiments changing over time?',
   },
   {
     id: 4,
-    title: 'SUSTAINABILITY', // Mockup shows this title twice
-    datasetText: 'Satellite imagery and sensor data related to green spaces and biodiversity within Amsterdam. Includes historical data on land use changes.',
-    directionsText: 'Develop a tool to monitor urban greening efforts. Propose data-driven strategies for enhancing biodiversity in urban environments. Visualize impact.',
+    title: 'Track 4', // Mockup shows this title twice
+    datasetText: 'TBA',
+    directionsText: 'TBA',
   },
 ];
 
@@ -130,9 +130,19 @@ const Dashboard = () => {
             solutions for real-world problems.
           </p>
           <ul className="space-y-3 mb-6">
-             <li className="flex items-start">
+            <li className="flex items-start">
               <img src={iconPaths.when} alt="" className="h-5 w-5 mr-3 mt-1 flex-shrink-0" />
-              <span><span className="font-semibold">When:</span> 2-3 June 025</span>
+              <span>
+                <span className="font-semibold">
+                  When:
+                </span>
+                  2-4 June 2025
+              </span>
+            </li>
+            <li className="flex items-start">
+            <span>
+                Opening event: Monday 2nd, 5pm. Closing event: Wednesday 4th, 5pm. Time in between can be scheduled to personal preference.
+              </span>
             </li>
             <li className="flex items-start">
               <img src={iconPaths.where} alt="" className="h-5 w-5 mr-3 mt-1 flex-shrink-0" />
@@ -140,7 +150,7 @@ const Dashboard = () => {
             </li>
             <li className="flex items-start">
               <img src={iconPaths.who} alt="" className="h-5 w-5 mr-3 mt-1 flex-shrink-0" />
-              <span><span className="font-semibold">Who:</span> All UvA students welcome, no prior skills needed</span>
+              <span><span className="font-semibold">Who:</span> All UvA students welcome, prior skills in research, data analysis or design are welcome</span>
             </li>
             <li className="flex items-start">
               <img src={iconPaths.what} alt="" className="h-5 w-5 mr-3 mt-1 flex-shrink-0" />
@@ -157,7 +167,7 @@ const Dashboard = () => {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 w-full px-4 sm:px-0 sm:w-auto">
             <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-4">
                 <Link
-                    to="/about"
+                    to="/tracks"
                     className="font-pixel uppercase
                                px-4 py-2 text-xs
                                sm:px-6 sm:py-3 sm:text-sm 

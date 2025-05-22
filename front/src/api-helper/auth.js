@@ -64,28 +64,42 @@ export const registerIndividual = async (userData) => {
   try {
     const response = await apiClient.post('/api/auth/register/individual', userData);
     if (!response.data || !response.data.success) {
-        throw new Error(response.data?.message || 'Registration failed: Unknown error');
+        // Prefer backend's specific error message if available in response.data.errors (from Marshmallow)
+        // or response.data.error (from your manual checks)
+        const errorDetail = response.data?.errors || response.data?.error || response.data?.message || 'Registration failed: Unknown error';
+        throw new Error(typeof errorDetail === 'string' ? errorDetail : JSON.stringify(errorDetail));
     }
     return response.data;
   } catch (error) {
-    console.error("API Error (Individual Reg):", error.response || error.message);
-    const message = error.response?.data?.error || error.response?.data?.message || `Request failed: ${error.message || 'Network Error or CORS issue'}`;
-    throw { message: message, status: error.response?.status };
+    console.error("API Error (Individual Reg):", error.response || error);
+    const message = error.response?.data?.errors || error.response?.data?.error || error.response?.data?.message || `Request failed: ${error.message || 'Network Error or CORS issue'}`;
+    // Ensure message is a string before throwing
+    const finalMessage = typeof message === 'string' ? message : JSON.stringify(message);
+    throw { message: finalMessage, status: error.response?.status || error.status };
    }
 };
 
 export const registerTeam = async (teamData) => {
   try {
-    const payload = { /* ... your payload ... */ };
+    // Construct the payload to match backend expectations (TeamRegistrationSchema)
+    const payload = {
+        team_name: teamData.teamName,
+        team_password: teamData.teamPassword, // This was missing
+        description: teamData.description,
+        members: teamData.members // The members array from teamData is already correctly structured
+                                 // with { name, email, expertise }
+    };
     const response = await apiClient.post('/api/auth/register/team', payload);
-     if (!response.data || !response.data.success) {
-        throw new Error(response.data?.message || 'Team registration failed: Unknown error');
+    if (!response.data || !response.data.success) {
+        const errorDetail = response.data?.errors || response.data?.error || response.data?.message || 'Team registration failed: Unknown error';
+        throw new Error(typeof errorDetail === 'string' ? errorDetail : JSON.stringify(errorDetail));
     }
     return response.data;
   } catch (error) {
-    console.error("API Error (Team Reg):", error.response || error.message);
-    const message = error.response?.data?.error || error.response?.data?.message || `Request failed: ${error.message || 'Network Error or CORS issue'}`;
-    throw { message: message, status: error.response?.status };
+    console.error("API Error (Team Reg):", error.response || error);
+    const message = error.response?.data?.errors || error.response?.data?.error || error.response?.data?.message || `Request failed: ${error.message || 'Network Error or CORS issue'}`;
+    const finalMessage = typeof message === 'string' ? message : JSON.stringify(message);
+    throw { message: finalMessage, status: error.response?.status || error.status };
   }
 };
 
@@ -93,12 +107,14 @@ export const loginUser = async (credentials) => {
   try {
     const response = await apiClient.post('/api/auth/login', credentials);
     if (!response.data || !response.data.success) {
-      throw new Error(response.data?.error || 'Login failed: Unknown error');
+      const errorDetail = response.data?.errors || response.data?.error || response.data?.message || 'Login failed: Unknown error';
+      throw new Error(typeof errorDetail === 'string' ? errorDetail : JSON.stringify(errorDetail));
     }
     return response.data;
   } catch (error) {
-    console.error("API Error (Login):", error.response || error.message);
-    const message = error.response?.data?.error || error.response?.data?.message || `Login failed: ${error.message || 'Network Error or CORS issue'}`;
-    throw { message: message, status: error.response?.status };
+    console.error("API Error (Login):", error.response || error);
+    const message = error.response?.data?.errors || error.response?.data?.error || error.response?.data?.message || `Login failed: ${error.message || 'Network Error or CORS issue'}`;
+    const finalMessage = typeof message === 'string' ? message : JSON.stringify(message);
+    throw { message: finalMessage, status: error.response?.status || error.status };
   }
 };
