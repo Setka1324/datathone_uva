@@ -159,8 +159,10 @@ const Dashboard = () => {
               <span><span className="font-semibold">What:</span> Join solo or as a team, pick a role and co-create a digital intervention.
               During the event, you will choose a track, decide on a direction with your team, and by combining
               data analysis and research, you will design - or create - a suitable intervention.
-              This could be a design/prototype for a tool (using e.g. Canva, Figma), or even the tool itself (using e.g. Lovable).
-              More information will be provided during the introduction event.</span>
+              This could be a design/prototype for a tool (using e.g. Canva, Figma), or even the tool itself (using e.g. Lovable).<br>
+              More information will be provided during the introduction event.<br>
+              Snacks/food will be available during the introduction event (Monday, 5pm) and closing event (Wednesday, 5pm).<br>
+              Follow our <a href="https://www.instagram.com/dice_impact/">Instagram</a> for more up-to-date information.</span>
             </li>
           </ul>
           <p className="text-center font-bold text-lg md:text-xl my-0 mb-0 uppercase font-pixel">
