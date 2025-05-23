@@ -82,7 +82,7 @@ const TrackCard = ({ track, index }) => {
             type="button"
             className="font-pixel uppercase text-xs bg-gray-200 text-black border-2 border-black hover:bg-gray-300 transition-colors px-4 py-2 shadow-sm"
           >
-            DOWNLOAD DATASET
+            AVAILABLE SOON!
           </button>
         </div>
       </div>
@@ -131,6 +131,7 @@ const Dashboard = () => {
             The D.I.C.E. ImpactThon is a 3-day challenge where UvA students from all
             backgrounds come together to create data-driven, ethically grounded,
             digital interventions for real-world problems. You can choose between four different tracks: psychology, social science, political science and sustainability.
+            We'll have food!
           </p>
           <ul className="space-y-3 mb-6">
             <li className="flex items-start">
@@ -159,9 +160,9 @@ const Dashboard = () => {
               <span><span className="font-semibold">What:</span> Join solo or as a team, pick a role and co-create a digital intervention.
               During the event, you will choose a track, decide on a direction with your team, and by combining
               data analysis and research, you will design - or create - a suitable intervention.
-              This could be a design/prototype for a tool (using e.g. Canva, Figma), or even the tool itself (using e.g. Lovable).<br>
-              More information will be provided during the introduction event.<br>
-              Snacks/food will be available during the introduction event (Monday, 5pm) and closing event (Wednesday, 5pm).<br>
+              This could be a design/prototype for a tool (using e.g. Canva, Figma), or even the tool itself (using e.g. Lovable).<br/>
+              More information will be provided during the introduction event.<br/>
+              Snacks/food will be available during the introduction event (Monday, 5pm) and closing event (Wednesday, 5pm).<br/>
               Follow our <a href="https://www.instagram.com/dice_impact/">Instagram</a> for more up-to-date information.</span>
             </li>
           </ul>

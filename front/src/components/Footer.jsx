@@ -28,6 +28,10 @@ function Footer() {
           <a href="https://www.bloom-uva.nl/" className="hover:underline">
             Made by Bloom 
           </a>
+          <a href="https://www.instagram.com/dice_impact/" className="hover:underline">
+            Instagram
+          </a>
+
           <a className="text-[#C0C0C0]">
             Mark+Amir
           </a>

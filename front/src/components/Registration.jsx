@@ -26,7 +26,7 @@ const VerticalTextSVG = ({ text, className = '' }) => (
 );
 // --- End Placeholder SVGs ---
 
-const MAX_TEAM_MEMBERS = 4;
+const MAX_TEAM_MEMBERS = 5;
 
 const Registration = () => {
     const [registrationType, setRegistrationType] = useState('individual');
