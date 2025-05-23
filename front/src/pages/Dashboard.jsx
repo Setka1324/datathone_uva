@@ -15,27 +15,27 @@ const iconPaths = {
 const tracksData = [
   {
     id: 1,
-    title: 'Track 1',
-    datasetText: 'For this track you will use a dataset on student wellbeing and movement patterns. It includes metrics on stress level, social interactions and time spent at different places.',
-    directionsText: 'How do wellbeing, movement, and campus environment relate? How can we create an improved university for everyone?',
+    title: 'Track 1 - Campus Wellbeing & Movement',
+    datasetText: 'Explore the relationship between student wellbeing and their campus experience. This track uses longitudinal data from over 200 students, including their movement patterns, the types of locations they visited, and their responses to mental health surveys collected over time.',
+    directionsText: 'How does movement correlate with student wellbeing? Are there patterns in movement and stress levels over time? Based on your analysis and additional research, design an intervention for a more supportive and healthy university environment.',
   },
   {
     id: 2,
-    title: 'Track 2',
+    title: 'Track 2 - European Values & Societal Change',
     datasetText: 'This dataset covers almost 40 years of survey data from many European of values about family, work, religion, politics, and society.',
-    directionsText: "There has been a rise in anti-democratic values and increasing polarisation. How can this be explained by changes in individual's values and how can we combat this?",
+    directionsText: "In an era marked by rising anti-democratic sentiments and increasing polarization, can we trace these trends back to fundamental changes in individual values? How do these value shifts differ across European regions? By analysing the long-term (regional) trends and additional research, design an intervention to create more democratic societies.",
   },
   {
     id: 3,
-    title: 'Track 3',
-    datasetText: 'Here, you will be provided with a dataset containing thousands of news headlines/descriptions.',
-    directionsText: 'Are newspapers contributing to more emotional headlines? How are themes and sentiments changing over time?',
+    title: 'Track 3 - News Media & Societal Division',
+    datasetText: 'For this track, you will be provided with a dataset containing thousands of news headlines/descriptions. Note: For the data analysis, NLP is required.',
+    directionsText: 'What is the role of news media in reinforcing societal divisions? How are sentiments in headlines evolving over time? Based on your analysis and additonal research, design an intervention for less biased and divisive public discourse.',
   },
   {
     id: 4,
-    title: 'Track 4', 
-    datasetText: 'TBA',
-    directionsText: 'TBA',
+    title: 'Track 4 - Sustainability & Global Inequality', 
+    datasetText: 'This dataset contains many variables related to sustainability, especially water, and how these have changed over time.',
+    directionsText: 'In a world of climate change and ever intensifying extreme weather events, we need to be more sustainable with our limited resources. Water scarcity has been an increasing issue - what factors are contributing to it? Which areas are especially affected? And how can we make sure water is being shared fairly, across the globe? Using data analysis and additional research, design an intervention to improve fairness.',
   },
 ];
 
@@ -128,9 +128,9 @@ const Dashboard = () => {
         </div>
         <div className="p-6 md:p-8 pb-16 sm:pb-24 md:pb-28 text-left text-sm md:text-base leading-relaxed text-black font-sticknobills">
           <p className="mb-6">
-            The D.I.C.E. ImpactThon is a 2-day challenge where UvA students from all
-            backgrounds come together to create data-driven, ethically grounded digital
-            solutions for real-world problems.
+            The D.I.C.E. ImpactThon is a 3-day challenge where UvA students from all
+            backgrounds come together to create data-driven, ethically grounded,
+            digital interventions for real-world problems. You can choose between four different tracks: psychology, social science, political science and sustainability.
           </p>
           <ul className="space-y-3 mb-6">
             <li className="flex items-start">
@@ -138,8 +138,7 @@ const Dashboard = () => {
               <span>
                 <span className="font-semibold">
                   When:
-                </span>
-                  2-4 June 2025
+                </span> 2-4 June 2025
               </span>
             </li>
             <li className="flex items-start">
@@ -157,7 +156,11 @@ const Dashboard = () => {
             </li>
             <li className="flex items-start">
               <img src={iconPaths.what} alt="" className="h-5 w-5 mr-3 mt-1 flex-shrink-0" />
-              <span><span className="font-semibold">What:</span> Join solo or as a team, pick a role and co-create a digital intervention</span>
+              <span><span className="font-semibold">What:</span> Join solo or as a team, pick a role and co-create a digital intervention.
+              During the event, you will choose a track, decide on a direction with your team, and by combining
+              data analysis and research, you will design - or create - a suitable intervention.
+              This could be a design/prototype for a tool (using e.g. Canva, Figma), or even the tool itself (using e.g. Lovable).
+              More information will be provided during the introduction event.</span>
             </li>
           </ul>
           <p className="text-center font-bold text-lg md:text-xl my-0 mb-0 uppercase font-pixel">
